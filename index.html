@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="es" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK-POT — Amortiguadores para Capot</title>
+<meta name="description" content="Sistema de amortiguadores para capot AK-POT. Apertura suave, instalación en minutos, sin perforaciones. Fabricado en Argentina. Envíos a todo el país.">
+
+<link rel="icon" type="image/png" href="car.png">
+<link rel="icon" type="image/png" sizes="96x96" href="img/car.png">
+<link rel="apple-touch-icon" sizes="180x180" href="img/car.png">
+<link rel="shortcut icon" href="img/car.png">
+<link rel="manifest" href="img/car.png">
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+/* =========================================================
+  Aca van las anotaciones
+   AK-POT v3 ---  Terminar sección.html con su contenido 
+========================================================= */
+
+:root{
+  --f-display:'Chakra Petch', sans-serif;
+  --f-body:'Inter', sans-serif;
+  --f-mono:'JetBrains Mono', monospace;
+
+  --radius-s:8px; --radius-m:16px; --radius-l:26px;
+  --gutter: clamp(1.25rem, 5vw, 6rem);
+  --section-y: clamp(4.5rem, 10vw, 9rem);
+
+  --ease-damper: cubic-bezier(.16,1,.3,1);
+  --ease-soft: cubic-bezier(.22,.9,.32,1);
+  --dur-s:.3s; --dur-m:.55s;
+
+  --blue:#3d3dff;
+  --blue-2:#7d7dff;
+  --red:#ff2130;
+  --yellow-ml:#ffe600;
+
+  color-scheme: dark;
+  --bg:#050507;
+  --bg-1:#0b0c11;
+  --bg-2:#111219;
+  --surface:#15161e;
+  --line: rgba(245,245,250,.09);
+  --line-strong: rgba(245,245,250,.16);
+  --ink:#f2f2f5;
+  --ink-dim:#9a9ba6;
+  --ink-faint:#5c5d68;
+  --blue-tint: rgba(61,61,255,.14);
+  --shadow: 0 30px 60px -30px rgba(0,0,0,.7);
+}
+
+[data-theme="light"]{
+  color-scheme: light;
+  --bg:#f3f1ea;
+  --bg-1:#ffffff;
+  --bg-2:#eae7dd;
+  --surface:#ffffff;
+  --line: rgba(10,10,15,.1);
+  --line-strong: rgba(10,10,15,.18);
+  --ink:#0c0d12;
+  --ink-dim:#54555f;
+  --ink-faint:#8b8c95;
+  --blue-tint: rgba(61,61,255,.08);
+  --shadow: 0 30px 50px -30px rgba(20,20,30,.18);
+}
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ background:var(--bg); min-height:100%; scroll-behavior:smooth; }
+body{
+  margin:0;
+  min-height:100%;
+  background-color: var(--bg);
+  background-image:
+    linear-gradient(90deg, rgba(5,5,7,.9) 0%, rgba(5,5,7,.72) 38%, rgba(5,5,7,.25) 100%),
+    url("img/hero.jpg");
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
+  color:var(--ink);
+  font-family:var(--f-body);
+  font-size:1rem;
+  line-height:1.6;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+  transition: background var(--dur-m) var(--ease-soft), color var(--dur-m) var(--ease-soft);
+}
+img{ max-width:100%; display:block; }
+a{ color:inherit; text-decoration:none; }
+button{ font-family:inherit; cursor:pointer; border:none; background:none; color:inherit; }
+ul{ list-style:none; margin:0; padding:0; }
+:focus-visible{ outline:2px solid var(--blue-2); outline-offset:3px; }
+
+.wrap{ max-width:1400px; margin:0 auto; padding-inline:var(--gutter); }
+section{ position:relative; padding:var(--section-y) 0; }
+.alt{ background:var(--bg-1); border-top:1px solid var(--line); border-bottom:1px solid var(--line); }
+#contacto.alt{
+  background: linear-gradient(180deg, rgba(5,5,7,.55) 0%, rgba(5,5,7,.75) 100%);
+  border-top:1px solid var(--line);
+  border-bottom:none;
+}
+
+h1,h2,h3{ font-family:var(--f-display); font-weight:700; line-height:1.05; letter-spacing:-.01em; margin:0; }
+h2{ font-size:clamp(1.9rem, 4vw, 3.1rem); }
+h3{ font-size:1.2rem; }
+p{ margin:0; color:var(--ink-dim); }
+
+/* texto forzado a blanco en ambos temas (legibilidad sobre el hero/fondos oscuros) */
+.text-force-white{ color:#ffffff !important; }
+.text-force-white .accent{ color:var(--blue-2) !important; }
+.text-force-white .accent-r{ color:var(--red) !important; }
+
+.tag{
+  font-family:var(--f-mono);
+  font-size:.72rem;
+  letter-spacing:.16em;
+  text-transform:uppercase;
+  color:var(--blue-2);
+  display:inline-flex; align-items:center; gap:.6em;
+}
+.tag::before{ content:''; width:8px; height:8px; border-radius:50%; background:var(--blue); box-shadow:0 0 0 3px var(--blue-tint); animation: blink 2.4s ease-in-out infinite; }
+@keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:.25; } }
+
+.section-head{ display:flex; flex-direction:column; gap:1rem; max-width:42rem; margin-bottom:clamp(2.2rem,5vw,3.6rem); }
+.section-head.center{ margin-inline:auto; text-align:center; align-items:center; }
+
+/* ---------- buttons ---------- */
+.btn{
+  position:relative;
+  display:inline-flex; align-items:center; justify-content:center; gap:.6em;
+  padding:1em 1.8em;
+  border-radius:999px;
+  font-weight:600; font-size:.92rem;
+  white-space:nowrap;
+  transition: transform var(--dur-s) var(--ease-damper), box-shadow var(--dur-s) var(--ease-damper), border-color var(--dur-s);
+  isolation:isolate;
+}
+
+.accent{ color:#4f7cff !important; }
+.btn:active{ transform:scale(.96); }
+.btn-primary{
+  color:#fff;
+  background: linear-gradient(135deg, var(--blue), #0000fa);
+  box-shadow:0 10px 26px -10px rgba(61,61,255,.6);
+}
+.btn-primary::before{
+  content:'';
+  position:absolute; inset:-2px; z-index:-1; border-radius:999px;
+  background: conic-gradient(from 0deg, var(--blue), var(--red), var(--blue-2), var(--blue));
+  opacity:0;
+  transition: opacity var(--dur-m) ease;
+  animation: spin 3.2s linear infinite;
+}
+.btn-primary:hover::before{ opacity:1; }
+.btn-primary:hover{ transform:translateY(-3px); box-shadow:0 16px 34px -10px rgba(61,61,255,.75); }
+@keyframes spin{ to{ transform:rotate(360deg); } }
+.btn-outline{
+  border:1px solid var(--line-strong);
+  color:var(--ink);
+}
+.btn-outline:hover{ border-color:var(--blue-2); background:var(--blue-tint); transform:translateY(-3px); }
+.btn-ml{
+  background:var(--yellow-ml);
+  color:#1a1a1a;
+  box-shadow:0 10px 26px -10px rgba(255,230,0,.35);
+}
+.btn-ml:hover{ transform:translateY(-3px); }
+.btn-instagram{
+  color:#fff;
+  background: linear-gradient(45deg, #405DE6, #5851DB 20%, #833AB4 45%, #C13584 70%, #E1306C 85%, #FD1D1D 100%);
+  box-shadow:0 10px 26px -10px rgba(193,53,132,.45);
+}
+.btn-instagram:hover{ transform:translateY(-3px); }
+.verified-badge{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:1.1rem;
+  height:1.1rem;
+  border-radius:999px;
+  background:linear-gradient(135deg, #4f7cff, #2b5bff);
+  color:#fff;
+  font-size:.72rem;
+  font-weight:800;
+  line-height:1;
+  box-shadow:0 0 0 2px rgba(255,255,255,.18), 0 4px 10px rgba(47,91,255,.35);
+  transform:translateY(-1px);
+}
+
+/* ---------- header ---------- */
+.header{
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  padding:1.4rem var(--gutter);
+  display:flex; align-items:center; justify-content:space-between;
+  border-bottom:1px solid transparent;
+  transition: padding var(--dur-m) var(--ease-damper), background var(--dur-m), border-color var(--dur-m), backdrop-filter var(--dur-m);
+}
+.header.scrolled{
+  padding:.8rem var(--gutter);
+  background: color-mix(in srgb, var(--bg) 78%, transparent);
+  backdrop-filter: blur(16px) saturate(140%);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  border-bottom:1px solid var(--line);
+}
+.header__logo{ display:flex; align-items:center; gap:.7rem; font-family:var(--f-display); font-weight:700; font-size:1.05rem; }
+.header__logo img{ height:72px; width:auto; }
+.header__nav{ display:none; align-items:center; gap:2.2rem; }
+.header__nav a{ font-family:var(--f-mono); font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; color:var(--ink-dim); text-decoration:none; transition: color var(--dur-s); }
+.header__nav a:hover{ color:var(--ink); }
+@media (min-width:900px){
+  .header__nav{ display:flex; }
+}
+.header__actions{ display:flex; align-items:center; gap:.9rem; }
+
+.btn-nico{
+  display:inline-flex; align-items:center; gap:.55em;
+  padding:.75em 1.4em;
+  border-radius:999px;
+  font-family:var(--f-mono);
+  font-weight:600;
+  font-size:.84rem;
+  letter-spacing:.03em;
+  color:#fff;
+  background: linear-gradient(135deg, var(--blue), #0000fa);
+  box-shadow:0 10px 26px -10px rgba(61,61,255,.6);
+  transition: transform var(--dur-s) var(--ease-damper), box-shadow var(--dur-s) var(--ease-damper);
+  white-space:nowrap;
+}
+.btn-nico:hover{ transform:translateY(-3px); box-shadow:0 16px 34px -10px rgba(61,61,255,.75); }
+.btn-nico .dot{ width:7px; height:7px; border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.25); animation: blink 2.4s ease-in-out infinite; flex-shrink:0; }
+
+/* theme switch mejorado — con sol y luna */
+.theme-switch{
+  --w:56px; --h:30px;
+  width:var(--w); height:var(--h);
+  border-radius:999px;
+  background:var(--bg-2);
+  border:1px solid var(--line-strong);
+  position:relative;
+  display:flex; align-items:center;
+  padding:3px;
+  transition: background var(--dur-m);
+  overflow:visible;
+}
+.theme-switch__knob{
+  width:22px; height:22px;
+  border-radius:50%;
+  background: linear-gradient(145deg, var(--blue-2), var(--blue));
+  box-shadow:0 0 10px rgba(61,61,255,.6), inset 0 0 0 1px rgba(255,255,255,.2);
+  transition: transform var(--dur-m) var(--ease-damper), background var(--dur-m), box-shadow var(--dur-m);
+  position:relative;
+  display:flex; align-items:center; justify-content:center;
+  z-index:2;
+}
+.theme-switch__knob svg{
+  width:12px; height:12px;
+  color:#fff;
+  position:absolute;
+  transition: opacity var(--dur-m), transform var(--dur-m);
+}
+.theme-switch__knob .icon-sun{
+  opacity:0;
+  transform: scale(0.4) rotate(-90deg);
+}
+.theme-switch__knob .icon-moon{
+  opacity:1;
+  transform: scale(1) rotate(0deg);
+}
+
+[data-theme="light"] .theme-switch__knob{
+  transform:translateX(26px);
+  background: linear-gradient(145deg, #ffd23f, #ffb100);
+  box-shadow:0 0 14px rgba(255,177,0,.55), inset 0 0 0 1px rgba(255,255,255,.4);
+}
+[data-theme="light"] .theme-switch__knob .icon-sun{
+  opacity:1;
+  transform: scale(1) rotate(0deg);
+}
+[data-theme="light"] .theme-switch__knob .icon-moon{
+  opacity:0;
+  transform: scale(0.4) rotate(90deg);
+}
+
+/* estrellas en modo oscuro (fondo del switch) */
+.theme-switch__stars{
+  position:absolute; inset:0; border-radius:999px;
+  pointer-events:none; z-index:1;
+  transition: opacity var(--dur-m);
+  opacity:1;
+}
+[data-theme="light"] .theme-switch__stars{
+  opacity:0;
+}
+.theme-switch__star{
+  position:absolute;
+  background:#fff;
+  border-radius:50%;
+  animation: twinkle 2s ease-in-out infinite;
+}
+.theme-switch__star:nth-child(1){ width:3px; height:3px; top:7px; left:10px; animation-delay:0s; }
+.theme-switch__star:nth-child(2){ width:2px; height:2px; top:12px; left:18px; animation-delay:.6s; }
+.theme-switch__star:nth-child(3){ width:2.5px; height:2.5px; top:6px; left:22px; animation-delay:1.2s; }
+
+@keyframes twinkle{
+  0%,100%{ opacity:0.3; transform:scale(1); }
+  50%{ opacity:1; transform:scale(1.6); }
+}
+
+/* nubes en modo claro (fondo del switch) */
+.theme-switch__clouds{
+  position:absolute; inset:0; border-radius:999px;
+  pointer-events:none; z-index:1;
+  transition: opacity var(--dur-m);
+  opacity:0;
+}
+[data-theme="light"] .theme-switch__clouds{
+  opacity:1;
+}
+.theme-switch__cloud{
+  position:absolute;
+  background:rgba(255,255,255,.7);
+  border-radius:999px;
+}
+.theme-switch__cloud:nth-child(1){
+  width:14px; height:5px;
+  top:8px; left:8px;
+  animation: floatCloud 3s ease-in-out infinite;
+}
+.theme-switch__cloud:nth-child(2){
+  width:10px; height:4px;
+  top:16px; left:14px;
+  animation: floatCloud 3.5s ease-in-out infinite .5s;
+}
+@keyframes floatCloud{
+  0%,100%{ transform:translateX(0); }
+  50%{ transform:translateX(3px); }
+}
+
+.header__burger{ display:flex; width:42px; height:42px; border-radius:50%; background:var(--bg-2); align-items:center; justify-content:center; flex-direction:column; gap:5px; flex-shrink:0; }
+.header__burger span{ width:18px; height:2px; background:var(--ink); border-radius:2px; transition: transform var(--dur-s) var(--ease-damper), opacity var(--dur-s); }
+.header__burger.active span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+.header__burger.active span:nth-child(2){ opacity:0; }
+.header__burger.active span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+
+.mobile-menu{
+  position:fixed; inset:0; z-index:190;
+  background: color-mix(in srgb, var(--bg) 97%, transparent);
+  backdrop-filter: blur(20px);
+  display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem;
+  transform: translateY(-100%);
+  transition: transform .55s var(--ease-damper);
+}
+.mobile-menu.open{ transform:translateY(0); }
+.mobile-menu a{ font-family:var(--f-display); font-size:1.5rem; font-weight:700; }
+.mobile-menu__theme{ display:flex; align-items:center; gap:.8rem; margin-top:.6rem; font-family:var(--f-mono); font-size:.78rem; color:var(--ink-faint); text-transform:uppercase; letter-spacing:.08em; }
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  padding-top: clamp(7rem, 14vw, 9rem);
+  padding-bottom: clamp(3rem, 8vw, 5rem);
+  background: transparent;
+}
+.hero__grid{
+  display:grid;
+  grid-template-columns: 1.05fr .95fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items:center;
+}
+.hero__flag{ display:inline-flex; align-items:center; gap:.5em; font-family:var(--f-mono); font-size:.75rem; color:var(--ink-faint); letter-spacing:.08em; text-transform:uppercase; margin-top:1.4rem; }
+.hero h1{ font-size:clamp(2.4rem, 5.6vw, 4.4rem); margin-top:1rem; }
+.hero h1 .accent{ color:var(--blue-2); }
+.hero h1 .accent-r{ color:var(--red); }
+.hero__desc{ margin-top:1.2rem; max-width:34rem; font-size:1.02rem; }
+.hero__list{ display:flex; flex-wrap:wrap; gap:.6rem 1.4rem; margin-top:1.6rem; }
+.hero__list li{ display:flex; align-items:center; gap:.5em; font-size:.86rem; color:var(--ink-dim); font-family:var(--f-mono); }
+.hero__list li svg{ width:14px; height:14px; color:var(--blue-2); flex-shrink:0; }
+.hero__ctas{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:2.2rem; }
+
+/* schematic panel — reemplaza la escena de auto/3D */
+.schema{
+  position:relative;
+  border-radius:var(--radius-l);
+  border:1px solid var(--line-strong);
+  background:
+    linear-gradient(var(--line) 1px, transparent 1px) 0 0/28px 28px,
+    linear-gradient(90deg, var(--line) 1px, transparent 1px) 0 0/28px 28px,
+    var(--bg-1);
+  aspect-ratio: 4/5;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+.schema__label{
+  position:absolute; top:1.2rem; left:1.2rem;
+  font-family:var(--f-mono); font-size:.68rem; letter-spacing:.1em; text-transform:uppercase;
+  color:var(--ink-faint);
+  display:flex; flex-direction:column; gap:.15rem;
+}
+.schema__label b{ color:var(--ink); font-size:.72rem; }
+.schema__ticker{
+  position:absolute; bottom:1.2rem; left:1.2rem; right:1.2rem;
+  display:flex; justify-content:space-between; gap:.6rem;
+  font-family:var(--f-mono); font-size:.62rem; letter-spacing:.05em;
+  color:var(--ink-faint);
+  border-top:1px dashed var(--line-strong);
+  padding-top:.8rem;
+  flex-wrap:wrap;
+}
+.schema__ticker span b{ color:var(--blue-2); font-weight:500; }
+.schema svg{ width:100%; height:100%; }
+.schema-pulse{ stroke-dasharray: 6 10; animation: dash 2.6s linear infinite; }
+@keyframes dash{ to{ stroke-dashoffset:-160; } }
+.schema-pulse2{ stroke-dasharray: 4 8; animation: dash2 3.4s linear infinite; }
+@keyframes dash2{ to{ stroke-dashoffset:160; } }
+.schema-blink{ animation: blink 2s ease-in-out infinite; }
+
+/* ---------- trust marquee ---------- */
+.trust{ border-top:1px solid var(--line); border-bottom:1px solid var(--line); background:var(--bg-1); overflow:hidden; }
+.trust__track{ display:flex; gap:3rem; width:max-content; padding:1.1rem 0; animation: marquee 26s linear infinite; }
+.trust__track:hover{ animation-play-state:paused; }
+@keyframes marquee{ to{ transform:translateX(-50%); } }
+.trust__item{ display:flex; align-items:center; gap:.6rem; font-family:var(--f-mono); font-size:.78rem; color:var(--ink-dim); white-space:nowrap; text-transform:uppercase; letter-spacing:.04em; }
+.trust__item svg{ width:14px; height:14px; color:var(--blue-2); }
+.trust__dot{ width:4px; height:4px; border-radius:50%; background:var(--ink-faint); }
+
+/* ---------- beneficios: frame HUD ---------- */
+.benefits__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; }
+.hud-card{
+  position:relative;
+  padding:2rem 1.7rem;
+  border:1px solid var(--line);
+  border-radius:var(--radius-s);
+  background:var(--bg-1);
+  transition: border-color var(--dur-m), transform .7s var(--ease-damper), opacity .7s var(--ease-damper);
+  opacity:0; transform:translateY(30px);
+}
+.hud-card.reveal{ opacity:1; transform:translateY(0); }
+.hud-card::before, .hud-card::after{
+  content:''; position:absolute; width:14px; height:14px;
+  border:2px solid var(--line-strong);
+  transition: border-color var(--dur-m);
+}
+.hud-card::before{ top:-1px; left:-1px; border-right:none; border-bottom:none; }
+.hud-card::after{ bottom:-1px; right:-1px; border-left:none; border-top:none; }
+.hud-card:hover{ border-color:var(--line-strong); transform:translateY(-6px); }
+.hud-card:hover::before, .hud-card:hover::after{ border-color:var(--blue-2); }
+.hud-card__num{ font-family:var(--f-mono); font-size:.72rem; color:var(--blue-2); letter-spacing:.1em; }
+.hud-card h3{ margin:.9rem 0 .6rem; font-size:1.1rem; }
+.hud-card p{ font-size:.9rem; }
+
+/* ---------- como funciona: flujo conectado ---------- */
+.flow{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+.flow::before{
+  content:''; position:absolute; top:22px; left:6%; right:6%; height:1px;
+  background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 14px);
+}
+.flow-step{ position:relative; padding:0 1rem; opacity:0; transform:translateY(20px); transition: transform .7s var(--ease-damper), opacity .7s var(--ease-damper); }
+.flow-step.reveal{ opacity:1; transform:translateY(0); }
+.flow-step__node{
+  width:44px; height:44px; border-radius:50%;
+  background:var(--bg-1); border:1px solid var(--line-strong);
+  display:flex; align-items:center; justify-content:center;
+  font-family:var(--f-mono); font-weight:700; font-size:.85rem; color:var(--blue-2);
+  margin-bottom:1.3rem;
+  position:relative; z-index:2;
+}
+.flow-step__node::after{ content:''; position:absolute; inset:-5px; border-radius:50%; border:1px solid var(--blue-2); opacity:0; transition:opacity var(--dur-m); }
+.flow-step:hover .flow-step__node::after{ opacity:.5; }
+.flow-step h3{ font-size:1.05rem; margin-bottom:.5rem; }
+.flow-step p{ font-size:.88rem; }
+
+/* ---------- brands marquee: chips tipográficos ---------- */
+.brands__wrap{ overflow:hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
+.brands__track{ display:flex; gap:1rem; width:max-content; animation: marquee 30s linear infinite; }
+.brands__track:hover{ animation-play-state:paused; }
+.brand-chip{
+  display:flex; align-items:center; gap:.6rem;
+  padding:.9rem 1.4rem;
+  border:1px solid var(--line);
+  border-radius:999px;
+  font-family:var(--f-display); font-weight:600; font-size:.92rem;
+  color:#f7c948;
+  background:linear-gradient(135deg, rgba(125,125,255,.08), rgba(255,255,255,.02));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+  white-space:nowrap;
+  transition: color var(--dur-m), border-color var(--dur-m), background var(--dur-m), box-shadow var(--dur-m), text-shadow var(--dur-m);
+  animation: goldPulse 1.8s ease-in-out infinite;
+}
+.brand-chip::before{ content:''; width:6px; height:6px; border-radius:50%; background:#f7c948; box-shadow:0 0 0 4px rgba(247,201,72,.18); transition: background var(--dur-m), box-shadow var(--dur-m); }
+.brand-chip:hover{ color:#ffd76a; border-color:var(--blue-2); background:linear-gradient(135deg, rgba(61,61,255,.16), rgba(255,255,255,.04)); box-shadow:0 0 0 1px rgba(125,125,255,.25), 0 0 22px -6px rgba(61,61,255,.5); text-shadow:0 0 10px rgba(247,201,72,.35); }
+.brand-chip:hover::before{ background:#ffd76a; box-shadow:0 0 8px rgba(247,201,72,.45); }
+
+@keyframes goldPulse{
+  0%, 100% { color: #f7c948; text-shadow: 0 0 0 rgba(247,201,72,0); }
+  50% { color: #ffd76a; text-shadow: 0 0 10px rgba(247,201,72,.35); }
+}
+
+/* ---------- Mercado Libre card ---------- */
+.ml-card{
+  border-radius:var(--radius-l);
+  overflow:hidden;
+  border:1px solid var(--line-strong);
+  background:var(--surface);
+  box-shadow:var(--shadow);
+}
+.ml-card__top{
+  background: var(--yellow-ml);
+  color:#151515;
+  padding: clamp(1.6rem,4vw,2.4rem);
+  display:flex; align-items:center; justify-content:space-between; gap:1.5rem; flex-wrap:wrap;
+}
+.ml-card__id{ display:flex; align-items:center; gap:1rem; }
+.ml-card__badge{
+  width:56px; height:56px; border-radius:14px;
+  background:#ffffff;
+  display:flex; align-items:center; justify-content:center;
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.08);
+  flex-shrink:0;
+}
+.ml-card__badge img{
+  width:100%; height:100%; object-fit:cover; display:block;
+}
+.ml-card__name{ display:flex; flex-direction:column; gap:.25rem; }
+.ml-card__name .store{ font-family:var(--f-display); font-weight:700; font-size:1.35rem; letter-spacing:-.01em; }
+.ml-card__verified{ display:inline-flex; align-items:center; gap:.35em; font-family:var(--f-mono); font-size:.7rem; text-transform:uppercase; letter-spacing:.08em; color:#1a1a1a; opacity:.75; }
+.ml-card__verified svg{ width:15px; height:15px; color:#1478ff; }
+.ml-card__link{
+  display:inline-flex; align-items:center; gap:.5em;
+  padding:.85em 1.5em; border-radius:999px;
+  background:#151515; color:var(--yellow-ml);
+  font-weight:600; font-size:.88rem;
+  transition: transform var(--dur-s) var(--ease-damper);
+}
+.ml-card__link:hover{ transform:translateY(-3px); }
+.ml-card__body{ padding: clamp(1.6rem,4vw,2.4rem); display:grid; grid-template-columns: repeat(3,1fr); gap:1.5rem; }
+.ml-stat{ display:flex; flex-direction:column; gap:.3rem; }
+.ml-stat b{ font-family:var(--f-display); font-size:1.6rem; }
+.ml-stat span{ font-family:var(--f-mono); font-size:.72rem; text-transform:uppercase; letter-spacing:.08em; color:var(--ink-faint); }
+
+/* ---------- productos: ticket técnico ---------- */
+.products__grid{ display:grid; grid-template-columns:repeat(3,1fr); gap:1.4rem; }
+.ticket{
+  position:relative;
+  border-radius:var(--radius-m);
+  border:1px solid var(--line);
+  background:var(--bg-1);
+  overflow:hidden;
+  opacity:0; transform:translateY(30px);
+  transition: transform .7s var(--ease-damper), border-color var(--dur-m), opacity .7s var(--ease-damper);
+}
+.ticket.reveal{ opacity:1; transform:translateY(0); }
+.ticket:hover{ transform:translateY(-8px); border-color:var(--line-strong); }
+.ticket__media{ aspect-ratio:1/1; overflow:hidden; border-bottom:1px dashed var(--line-strong); position:relative; }
+.ticket__media::after{
+  content:''; position:absolute; left:0; right:0; bottom:-9px; height:18px;
+  background: radial-gradient(circle at 10px 50%, transparent 9px, var(--bg-1) 9.5px) repeat-x;
+  background-size: 20px 18px;
+}
+.ticket__media img{ width:100%; height:100%; object-fit:cover; transition: transform .7s var(--ease-damper); }
+.ticket:hover .ticket__media img{ transform:scale(1.06); }
+.ticket__body{ padding:1.7rem 1.5rem 1.9rem; }
+.ticket__tag{ font-family:var(--f-mono); font-size:.68rem; color:var(--blue-2); text-transform:uppercase; letter-spacing:.1em; }
+.ticket h3{ margin:.6rem 0 .45rem; font-size:1.2rem; }
+.ticket p{ font-size:.86rem; margin-bottom:1rem; }
+.ticket__specs{ display:flex; gap:.9rem; flex-wrap:wrap; margin-bottom:1.3rem; }
+.ticket__specs span{ font-family:var(--f-mono); font-size:.68rem; color:var(--ink-faint); border:1px solid var(--line); border-radius:6px; padding:.3em .6em; }
+
+/* ---------- instalación ---------- */
+.install__wrap{ display:grid; grid-template-columns:1fr; max-width:760px; margin-inline:auto; }
+.install-step{ display:flex; gap:1.2rem; padding:1.4rem 0; border-bottom:1px solid var(--line); opacity:0; transform:translateX(-24px); transition: transform .7s var(--ease-damper), opacity .7s var(--ease-damper); }
+.install-step.reveal{ opacity:1; transform:translateX(0); }
+.install-step__num{ font-family:var(--f-mono); color:var(--blue-2); min-width:2.2rem; font-size:1rem; }
+.install-step h3{ font-size:1.05rem; margin-bottom:.35rem; }
+.install-step p{ font-size:.88rem; }
+/* ---------- FAQ ---------- */
+.faq__list{ max-width:840px; margin:0 auto; }
+.faq-item{ border-bottom:1px solid var(--line); }
+.faq-item__q{ width:100%; display:flex; align-items:center; gap:1rem; padding:1.5rem 0; text-align:left; font-weight:600; font-size:1rem; }
+.faq-item__q .n{ font-family:var(--f-mono); font-size:.78rem; color:var(--blue-2); min-width:2rem; }
+.faq-item__icon{ width:26px; height:26px; border-radius:50%; border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; flex-shrink:0; position:relative; margin-left:auto; transition: transform var(--dur-m) var(--ease-damper), border-color var(--dur-s); }
+.faq-item__icon::before, .faq-item__icon::after{ content:''; position:absolute; background:var(--ink-dim); transition: background var(--dur-s); }
+.faq-item__icon::before{ width:10px; height:1px; }
+.faq-item__icon::after{ width:1px; height:10px; }
+.faq-item.open .faq-item__icon{ transform:rotate(45deg); border-color:var(--blue-2); }
+.faq-item.open .faq-item__icon::before, .faq-item.open .faq-item__icon::after{ background:var(--blue-2); }
+.faq-item__a{ max-height:0; overflow:hidden; transition:max-height .5s var(--ease-damper); }
+.faq-item__a p{ padding:0 0 1.5rem 3rem; font-size:.92rem; max-width:600px; }
+
+/* ---------- contacto ---------- */
+.contact{
+  border-radius:var(--radius-l);
+  border:1px solid var(--line-strong);
+  background: linear-gradient(135deg, var(--blue-tint), transparent 60%), rgba(7,8,12,.45);
+  backdrop-filter: blur(10px) saturate(140%);
+  -webkit-backdrop-filter: blur(10px) saturate(140%);
+  padding:clamp(2.2rem,6vw,4.5rem);
+  display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:2rem;
+}
+.contact h2{ font-size:clamp(1.7rem,3.4vw,2.5rem); max-width:20ch; }
+.contact__ctas{ display:flex; gap:1rem; flex-wrap:wrap; }
+
+/* ---------- footer ---------- */
+.footer{ background:var(--bg); border-top:1px solid var(--line); padding:3.6rem 0 2rem; position:relative; z-index:20; }
+.footer__top{ display:grid; grid-template-columns:1.4fr repeat(3,1fr); gap:2.2rem; padding-bottom:2.6rem; border-bottom:1px solid var(--line); }
+.footer__brand img{ height:30px; margin-bottom:1.1rem; }
+.footer__brand p{ font-size:.86rem; max-width:28ch; }
+.footer__col h4{ font-family:var(--f-mono); font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint); margin-bottom:1.1rem; font-weight:400; }
+.footer__col ul{ display:flex; flex-direction:column; gap:.75rem; }
+.footer__col a{ font-size:.88rem; color:var(--ink-dim); transition:color var(--dur-s); }
+.footer__col a:hover{ color:var(--blue-2); }
+.footer__bottom{ display:flex; flex-wrap:wrap; gap:1rem; justify-content:space-between; align-items:center; padding-top:1.8rem; font-size:.78rem; color:var(--ink-faint); position:relative; z-index:25; }
+.footer__social{ display:flex; gap:.8rem; position:relative; z-index:30; }
+.footer__social a{ width:36px; height:36px; border-radius:50%; border:1px solid var(--line-strong); display:flex; align-items:center; justify-content:center; transition: border-color var(--dur-s), background var(--dur-s), transform var(--dur-s); position:relative; z-index:35; pointer-events:auto; }
+.footer__social a:hover{ border-color:var(--blue-2); background:var(--blue-tint); transform:translateY(-3px); }
+.footer__social svg{ width:15px; height:15px; }
+
+/* ---------- WhatsApp FAB ---------- */
+.wa-fab{ position:fixed; right:clamp(1.1rem,3vw,2.2rem); bottom:clamp(1.1rem,3vw,2.2rem); z-index:120; display:inline-flex; flex-direction:column; align-items:flex-end; gap:.8rem; width:fit-content; height:fit-content; pointer-events:none; }
+
+.wa-fab > *{ pointer-events:auto; }
+.wa-fab__menu{ display:flex; flex-direction:column; gap:.65rem; opacity:0; transform:translateY(12px) scale(.96); pointer-events:none; transition: opacity var(--dur-m) var(--ease-damper), transform var(--dur-m) var(--ease-damper); }
+.wa-fab.open .wa-fab__menu{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+.wa-fab__option{ display:flex; align-items:center; gap:.75rem; background:var(--surface); border:1px solid var(--line-strong); padding:.75rem 1.05rem; border-radius:999px; font-size:.82rem; font-weight:600; white-space:nowrap; box-shadow:var(--shadow); transition: transform var(--dur-s) var(--ease-damper), border-color var(--dur-s); }
+.wa-fab__option:hover{ transform:translateX(-4px); border-color:var(--blue-2); }
+.wa-fab__option .dot{ width:8px; height:8px; border-radius:50%; }
+.wa-fab__option.red .dot{ background:var(--red); }
+.wa-fab__option.blue .dot{ background:var(--blue-2); }
+.wa-fab__toggle{ width:60px; height:60px; border-radius:50%; background: linear-gradient(145deg, var(--bg-2), var(--bg)); border:1px solid var(--blue-2); box-shadow:0 0 0 0 rgba(61,61,255,.5), var(--shadow); display:flex; align-items:center; justify-content:center; position:relative; transition: transform var(--dur-s) var(--ease-damper); animation: waPulse 3s infinite; overflow:hidden; padding:0; }
+.wa-fab__toggle::before{ content:''; position:absolute; inset:-3px; border-radius:50%; background: linear-gradient(90deg, #1f6fff, #ff2130, #ffffff, #1f6fff); background-size:220% 100%; animation: waRgb 1.2s linear infinite; z-index:0; opacity:.95; filter:blur(2px); }
+.wa-fab__toggle:hover{ transform:scale(1.06); }
+.wa-fab__toggle img{ width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:2; border-radius:50%; }
+.wa-fab__toggle svg{ width:24px; height:24px; color:var(--ink); transition: transform var(--dur-m) var(--ease-damper); }
+.wa-fab.open .wa-fab__toggle svg{ transform:rotate(135deg); }
+@keyframes waRgb{ 0%{ background-position:0% 50%; } 100%{ background-position:200% 50%; } }
+@keyframes waPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(61,61,255,.3), var(--shadow); } 50%{ box-shadow:0 0 0 9px rgba(61,61,255,0), var(--shadow); } }
+
+/* ---------- loader ---------- */
+.loader{ position:fixed; inset:0; background:var(--bg); z-index:999; display:flex; align-items:center; justify-content:center; transition: opacity .6s var(--ease-damper), visibility .6s; }
+.loader.done{ opacity:0; visibility:hidden; }
+.loader__mark{ font-family:var(--f-mono); font-size:.85rem; letter-spacing:.2em; color:var(--ink-faint); display:flex; flex-direction:column; align-items:center; gap:1rem; }
+.loader__bar{ width:160px; height:2px; background:var(--line-strong); position:relative; overflow:hidden; }
+.loader__bar::after{ content:''; position:absolute; inset:0; background:var(--blue-2); transform-origin:left; animation: load 1.1s var(--ease-damper) forwards; }
+@keyframes load{ from{ transform:scaleX(0); } to{ transform:scaleX(1); } }
+
+.reveal-up{ opacity:0; transform:translateY(36px); transition: opacity .8s var(--ease-damper), transform .8s var(--ease-damper); }
+.reveal-up.reveal{ opacity:1; transform:translateY(0); }
+
+/* variantes de entrada para dar más "onda" al scroll */
+.reveal-fade{ opacity:0; transition: opacity .9s var(--ease-soft); }
+.reveal-fade.reveal{ opacity:1; }
+.reveal-left{ opacity:0; transform:translateX(-40px); transition: opacity .8s var(--ease-damper), transform .8s var(--ease-damper); }
+.reveal-left.reveal{ opacity:1; transform:translateX(0); }
+.reveal-right{ opacity:0; transform:translateX(40px); transition: opacity .8s var(--ease-damper), transform .8s var(--ease-damper); }
+.reveal-right.reveal{ opacity:1; transform:translateX(0); }
+.reveal-scale{ opacity:0; transform:scale(.92); transition: opacity .8s var(--ease-damper), transform .8s var(--ease-damper); }
+.reveal-scale.reveal{ opacity:1; transform:scale(1); }
+
+@media (max-width:1024px){
+  .hero__grid{ grid-template-columns:1fr; }
+  .schema{ max-width:480px; margin-inline:auto; }
+  .benefits__grid{ grid-template-columns:1fr 1fr; }
+  .flow{ grid-template-columns:1fr 1fr; row-gap:2rem; }
+  .flow::before{ display:none; }
+  .products__grid{ grid-template-columns:1fr 1fr; }
+  .install__wrap{ grid-template-columns:1fr; }
+  .footer__top{ grid-template-columns:1fr 1fr; }
+  .ml-card__body{ grid-template-columns:1fr 1fr; }
+}
+@media (max-width:680px){
+  .benefits__grid{ grid-template-columns:1fr; }
+  .flow{ grid-template-columns:1fr; }
+  .products__grid{ grid-template-columns:1fr; }
+  .footer__top{ grid-template-columns:1fr; }
+  .ml-card__body{ grid-template-columns:1fr; }
+  .ml-card__top{ flex-direction:column; align-items:flex-start; }
+  .contact{ flex-direction:column; align-items:flex-start; }
+  .btn-nico{ padding:.65em 1.1em; font-size:.78rem; }
+}
+@media (prefers-reduced-motion: reduce){
+  html{ scroll-behavior:auto; }
+  *{ animation-duration:.001ms !important; animation-iteration-count:1 !important; transition-duration:.001ms !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="loader" aria-hidden="true">
+  <div class="loader__mark">
+    AK-POT · CARGANDO SISTEMA
+    <div class="loader__bar"></div>
+  </div>
+</div>
+
+<header class="header">
+  <a href="#top" class="header__logo">
+    <img src="img/akpot.logo.jpg" alt="AK-POT">
+  </a>
+  <nav class="header__nav">
+    <a href="#top">Inicio</a>
+    <a href="compatibilidad.html">Compatibilidad</a>
+    <a href="contacto.html">Contacto</a>
+    <a href="#productos">Nuestros productos</a>
+  </nav>
+  <div class="header__actions">
+    <a href="seccion.html" class="btn-nico"><span class="dot"></span>Nico#N3F</a>
+    <button class="header__burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="#top">Inicio</a>
+  <a href="compatibilidad.html">Compatibilidad</a>
+  <a href="contacto.html">Contacto</a>
+  <a href="#productos">Nuestros productos</a>
+  <a href="#beneficios">Beneficios</a>
+  <a href="#como-funciona">Cómo funciona</a>
+  <a href="#productos">Productos</a>
+  <a href="#tienda">Tienda oficial</a>
+  <a href="#instalacion">Instalación</a>
+  <a href="#faq">Preguntas</a>
+  <div class="mobile-menu__theme">
+    Tema
+    <button class="theme-switch" id="themeSwitch" aria-label="Cambiar tema" aria-pressed="false">
+      <!-- Estrellas para modo oscuro -->
+      <span class="theme-switch__stars">
+        <span class="theme-switch__star"></span>
+        <span class="theme-switch__star"></span>
+        <span class="theme-switch__star"></span>
+      </span>
+      <!-- Nubes para modo claro -->
+      <span class="theme-switch__clouds">
+        <span class="theme-switch__cloud"></span>
+        <span class="theme-switch__cloud"></span>
+      </span>
+      <!-- Perilla con sol y luna -->
+      <span class="theme-switch__knob">
+        <!-- Luna (visible en modo oscuro) -->
+        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M21.64 13a1 1 0 00-1.05-.14 8.05 8.05 0 01-3.37.73 8.15 8.15 0 01-8.14-8.1 8.59 8.59 0 01.25-2A1 1 0 008.43 2.5a10 10 0 1013.21 10.66z"/>
+        </svg>
+        <!-- Sol (visible en modo claro) -->
+        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor">
+          <circle cx="12" cy="12" r="5"/>
+          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+        </svg>
+      </span>
+    </button>
+  </div>
+</div>
+
+<main id="top">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="wrap hero__grid">
+      <div>
+        <span class="tag">AK-POT</span>
+        <h1 class="text-force-white">El capot se abre solo. <span class="accent" style="color:#3d3dff;">Sin varilla.</span> <span class="accent-r">Sin golpes.</span></h1>
+        <p class="hero__desc">Kit de amortiguadores a gas para capot: reemplaza la varilla por dos pistones que sostienen el capot en cualquier posición, con apertura suave y sin perforar la carrocería.</p>
+        <ul class="hero__list">
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4L19 6"/></svg> Sin perforaciones</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4L19 6"/></svg> Instalación en minutos</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4L19 6"/></svg> Envíos a todo el país</li>
+          <li><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4L19 6"/></svg> Industria Argentina</li>
+        </ul>
+        <div class="hero__ctas">
+          <a href="https://www.instagram.com/akpot_ok/" target="_blank" rel="noopener" class="btn btn-instagram" aria-label="Instagram oficial de AK-POT">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="18" height="18" aria-hidden="true">
+              <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+              <circle cx="12" cy="12" r="4"></circle>
+              <circle cx="17.5" cy="6.5" r="1"></circle>
+            </svg>
+            <span>AK-POT</span>
+            <span class="verified-badge" aria-label="Verificado">✓</span>
+          </a>
+          <a href="#tienda" class="btn btn-ml">Comprar en Mercado Libre</a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- BENEFICIOS -->
+  <section id="beneficios">
+    <div class="wrap">
+      <div class="section-head reveal-up">
+        <span class="tag">Por qué AK-POT</span>
+        <h2 class="text-force-white">Ingeniería pensada para tu capot</h2>
+      </div>
+      <div class="benefits__grid">
+        <article class="hud-card"><span class="hud-card__num">01</span><h3>Sistema amortiguado</h3><p>Dos pistones a gas que sostienen el capot en cualquier posición, sin esfuerzo y sin caídas bruscas.</p></article>
+        <article class="hud-card"><span class="hud-card__num">02</span><h3>Apertura suave</h3><p>Movimiento controlado y silencioso de principio a fin, como en un vehículo de alta gama.</p></article>
+        <article class="hud-card"><span class="hud-card__num">03</span><h3>Instalación en minutos</h3><p>Kit diseñado para instalarse con herramientas básicas, sin conocimientos técnicos avanzados.</p></article>
+        <article class="hud-card"><span class="hud-card__num">04</span><h3>Sin perforaciones</h3><p>Se ajusta a los puntos de fábrica de tu vehículo. No modifica ni perfora la carrocería.</p></article>
+        <article class="hud-card"><span class="hud-card__num">05</span><h3>Fabricado en Argentina</h3><p>Producción nacional con control de calidad en cada unidad que sale de fábrica.</p></article>
+        <article class="hud-card"><span class="hud-card__num">06</span><h3>Envíos a todo el país</h3><p>Logística propia con seguimiento, desde Tienda Oficial Mercado Libre a cualquier provincia.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMO FUNCIONA -->
+  <section id="como-funciona" class="alt">
+    <div class="wrap">
+      <div class="section-head reveal-up">
+        <span class="tag">El sistema</span>
+        <h2>Cómo funciona el amortiguador</h2>
+      </div>
+      <div class="flow">
+        <div class="flow-step"><div class="flow-step__node">01</div><h3>Anclaje de fábrica</h3><p>Los soportes se fijan en los puntos originales del capot y la carrocería.</p></div>
+        <div class="flow-step"><div class="flow-step__node">02</div><h3>Pistón a gas</h3><p>Un cilindro presurizado genera resistencia progresiva durante todo el recorrido.</p></div>
+        <div class="flow-step"><div class="flow-step__node">03</div><h3>Apertura controlada</h3><p>El capot sube de forma suave, sin golpes ni movimientos bruscos.</p></div>
+        <div class="flow-step"><div class="flow-step__node">04</div><h3>Sostén automático</h3><p>Queda sostenido en el aire en cualquier ángulo, sin varillas ni trabas manuales.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TIENDA OFICIAL MERCADO LIBRE -->
+  <section id="tienda" class="alt">
+    <div class="wrap">
+      <div class="section-head reveal-up">
+        <span class="tag">Compra protegida</span>
+        <h2>Encontranos en Mercado Libre</h2>
+      </div>
+      <div class="ml-card reveal-scale">
+        <div class="ml-card__top">
+          <div class="ml-card__id">
+            <div class="ml-card__badge"><img src="img/images.jpg" alt="AK-POT"></div>
+            <div class="ml-card__name">
+              <span class="store">AK-POT · Tienda Oficial</span>
+              <span class="ml-card__verified">
+                <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l2.4 2.1 3.1-.5 1 3 2.9 1.4-.7 3.1 1.3 2.9-2.3 2.2.3 3.1-3.1.4-1.7 2.6L12 21.4l-2.9.9-1.7-2.6-3.1-.4.3-3.1-2.3-2.2 1.3-2.9-.7-3.1 2.9-1.4 1-3 3.1.5z"/><path d="M9 12.5l2 2 4-4.5" stroke="#fff" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Vendedor verificado
+              </span>
+            </div>
+          </div>
+          <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="ml-card__link">
+            Visitar tienda
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M7 17L17 7M9 7h8v8"/></svg>
+          </a>
+        </div>
+        <div class="ml-card__body">
+          <div class="ml-stat"><b>+50.000</b><span>Ventas</span></div>
+          <div class="ml-stat"><b>100%</b><span>Envío gratis en catálogo</span></div>
+          <div class="ml-stat"><b>4</b><span>Categorías de producto</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTOS -->
+  <section id="productos">
+    <div class="wrap">
+      <div class="section-head reveal-up">
+        <span class="tag">Catálogo</span>
+        <h2>Productos destacados</h2>
+      </div>
+      <div class="products__grid">
+        <article class="ticket">
+          <div class="ticket__media"><img src="img/standard.png" alt="Kit AK-POT Standard" loading="lazy"></div>
+          <div class="ticket__body">
+            <span class="ticket__tag">Línea Standard</span>
+            <h3>Kit AK-POT Standard</h3>
+            <p>Para autos y sedanes. Instalación directa sobre soportes de fábrica.</p>
+            <div class="ticket__specs"><span>2 pistones</span><span>Sin taller</span><span>Garantía</span></div>
+            <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
+          </div>
+        </article>
+        <article class="ticket">
+          <div class="ticket__media"><img src="img/proimg.png" alt="Kit AK-POT Pro" loading="lazy"></div>
+          <div class="ticket__body">
+            <span class="ticket__tag">Línea Pro</span>
+            <h3>Kit AK-POT Pro</h3>
+            <p>Pistones reforzados para capots de mayor peso y superficies extendidas.</p>
+            <div class="ticket__specs"><span>Reforzado</span><span>Sin taller</span><span>Garantía</span></div>
+            <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
+          </div>
+        </article>
+        <article class="ticket">
+          <div class="ticket__media"><img src="img/pro4x4.png" alt="Kit AK-POT 4x4" loading="lazy"></div>
+          <div class="ticket__body">
+            <span class="ticket__tag">Línea 4x4</span>
+            <h3>Kit AK-POT 4x4</h3>
+            <p>Diseñado para pick-ups y camionetas, mayor resistencia y recorrido.</p>
+            <div class="ticket__specs"><span>Mayor recorrido</span><span>Sin taller</span><span>Garantía</span></div>
+            <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- INSTALACION -->
+  <section id="instalacion" class="alt">
+    <div class="wrap">
+      <div class="install__wrap">
+        <div>
+          <div class="section-head reveal-up" style="margin-bottom:2rem;">
+            <span class="tag">Instalación</span>
+            <h2>Instalación en minutos, sin taller</h2>
+          </div>
+          <div class="install__steps">
+            <div class="install-step"><span class="install-step__num">01</span><div><h3>Abrí el capot</h3><p>Ubicá los puntos de anclaje originales a cada lado del compartimento del motor.</p></div></div>
+            <div class="install-step"><span class="install-step__num">02</span><div><h3>Fijá los soportes</h3><p>Colocá los soportes AK-POT con los tornillos incluidos, sin perforar la carrocería.</p></div></div>
+            <div class="install-step"><span class="install-step__num">03</span><div><h3>Montá los pistones</h3><p>Encastrá cada pistón a gas entre el soporte del capot y el de la carrocería.</p></div></div>
+            <div class="install-step"><span class="install-step__num">04</span><div><h3>Probá el sistema</h3><p>Abrí y cerrá el capot para verificar el recorrido suave y el sostén automático.</p></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head center reveal-up">
+        <span class="tag">Preguntas frecuentes</span>
+        <h2 class="text-force-white">¿Tenés dudas?</h2>
+      </div>
+      <div class="faq__list">
+        <div class="faq-item reveal-up"><button class="faq-item__q text-force-white"><span class="n">01</span>¿El kit sirve para cualquier vehículo?<span class="faq-item__icon"></span></button><div class="faq-item__a"><p>AK-POT fabrica kits específicos según marca y modelo. Usá el buscador para confirmar la compatibilidad con tu vehículo.</p></div></div>
+        <div class="faq-item reveal-up"><button class="faq-item__q text-force-white"><span class="n">02</span>¿Necesito llevarlo a un taller?<span class="faq-item__icon"></span></button><div class="faq-item__a"><p>No. El sistema está diseñado para instalarse en minutos con herramientas básicas, siguiendo la guía incluida.</p></div></div>
+        <div class="faq-item reveal-up"><button class="faq-item__q text-force-white"><span class="n">03</span>¿El kit perfora la carrocería?<span class="faq-item__icon"></span></button><div class="faq-item__a"><p>No. Los soportes se fijan sobre los puntos de anclaje originales de fábrica, sin perforaciones adicionales.</p></div></div>
+        <div class="faq-item reveal-up"><button class="faq-item__q text-force-white"><span class="n">04</span>¿Hacen envíos a todo el país?<span class="faq-item__icon"></span></button><div class="faq-item__a"><p>Sí. Los envíos se gestionan a través de Tienda Oficial Mercado Libre a cualquier provincia de Argentina.</p></div></div>
+        <div class="faq-item reveal-up"><button class="faq-item__q text-force-white"><span class="n">05</span>¿Qué garantía tiene el producto?<span class="faq-item__icon"></span></button><div class="faq-item__a"><p>Todos los kits AK-POT cuentan con garantía de fábrica. Escribinos por WhatsApp para conocer el detalle de tu modelo.</p></div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACTO -->
+  <section id="contacto" class="alt">
+    <div class="wrap">
+      <div class="contact reveal-scale">
+        <h2>Llevá tu capot a otro nivel.</h2>
+        <div class="contact__ctas">
+          <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-ml">Comprar en Mercado Libre</a>
+          <a href="https://wa.me/c/5491149756860" target="_blank" rel="noopener" class="btn btn-outline">Escribinos por WhatsApp</a>
+          <a href="contacto.html" class="btn btn-outline">Ir al formulario de contacto</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <img src="img/akpot.logo.jpg" alt="AK-POT">
+        <p>Amortiguadores para capot. Tecnología, calidad y confianza en cada instalación.</p>
+      </div>
+      <div class="footer__col">
+        <h4>Navegación</h4>
+        <ul>
+          <li><a href="#beneficios">Beneficios</a></li>
+          <li><a href="#como-funciona">Cómo funciona</a></li>
+          <li><a href="#productos">Productos</a></li>
+          <li><a href="#instalacion">Instalación</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Comprá</h4>
+        <ul>
+          <li><a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener">Tienda Oficial Mercado Libre</a></li>
+          <li><a href="https://wa.me/c/5491149756860" target="_blank" rel="noopener">Comprar por WhatsApp</a></li>
+          <li><a href="https://www.whatsapp.com/catalog/5491165565186/?app_absent=0" target="_blank" rel="noopener">Consultas particulares</a></li>
+        </ul>
+      </div>
+      <div class="footer__col">
+        <h4>Ayuda</h4>
+        <ul>
+          <li><a href="#faq">Preguntas frecuentes</a></li>
+          <li><a href="contacto.html">Contacto</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>© 2026 AK-POT. Todos los derechos reservados.</span>
+      <div class="footer__social">
+        <a href="https://www.instagram.com/akpot_ok/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://www.tiktok.com/@akpot_amortiguadoresok" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v10.5a3.5 3.5 0 11-3-3.46V7a6.5 6.5 0 106.5 6.5V8.5c1 .7 2.2 1 3.5 1V6.5c-1.8 0-3.3-1.2-3.7-3H14z"/></svg></a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<div class="wa-fab">
+  <div class="wa-fab__menu">
+    <a class="wa-fab__option blue" href="https://wa.me/c/5491149756860" target="_blank" rel="noopener"><span class="dot"></span> Comprar por WhatsApp</a>
+    <a class="wa-fab__option red" href="https://www.whatsapp.com/catalog/5491165565186/?app_absent=0" target="_blank" rel="noopener"><span class="dot"></span> Consultas particulares</a>
+  </div>
+  <button class="wa-fab__toggle" aria-label="Contactar por WhatsApp">
+    <img src="img/img.whatsApp.webp" alt="WhatsApp">
+  </button>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+
+  /* loader */
+  const loader = document.querySelector('.loader');
+  window.addEventListener('load', () => setTimeout(() => loader && loader.classList.add('done'), 450));
+
+  /* theme toggle */
+  const root = document.documentElement;
+  const themeSwitch = document.getElementById('themeSwitch');
+  themeSwitch.addEventListener('click', () => {
+    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
+    root.setAttribute('data-theme', next);
+    themeSwitch.setAttribute('aria-pressed', String(next === 'light'));
+  });
+
+  /* header scroll state */
+  const header = document.querySelector('.header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 60);
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  /* mobile menu (funciona como el unico menu, en cualquier tamaño de pantalla) */
+  const burger = document.querySelector('.header__burger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  burger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }));
+
+  /* faq accordion */
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const q = item.querySelector('.faq-item__q');
+    const a = item.querySelector('.faq-item__a');
+    q.addEventListener('click', () => {
+      const isOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(other => {
+        if (other !== item){ other.classList.remove('open'); other.querySelector('.faq-item__a').style.maxHeight = null; }
+      });
+      item.classList.toggle('open', !isOpen);
+      a.style.maxHeight = !isOpen ? a.scrollHeight + 'px' : null;
+    });
+  });
+
+  /* whatsapp fab */
+  const waFab = document.querySelector('.wa-fab');
+  const waToggle = document.querySelector('.wa-fab__toggle');
+  waToggle.addEventListener('click', () => waFab.classList.toggle('open'));
+  document.addEventListener('click', (e) => { if (!waFab.contains(e.target)) waFab.classList.remove('open'); });
+
+  /* marquees: duplico contenido para loop infinito */
+  ['trustTrack','brandsTrack'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.innerHTML += el.innerHTML;
+  });
+
+  /* reveal on scroll con stagger — animaciones diferenciadas por tipo de elemento */
+  const revealSelectors = '.hud-card, .flow-step, .ticket, .install-step, .reveal-up, .reveal-fade, .reveal-left, .reveal-right, .reveal-scale';
+  const revealGroups = {};
+  document.querySelectorAll(revealSelectors).forEach(el => {
+    const parent = el.parentElement;
+    if (!revealGroups[parent] ) revealGroups[parent] = [];
+  });
+
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        const el = entry.target;
+        // stagger: si el elemento tiene hermanos con la misma clase de reveal en el mismo contenedor, escalono el delay
+        const siblings = Array.from(el.parentElement.children).filter(s => s.matches && s.matches(revealSelectors));
+        const idx = siblings.indexOf(el);
+        const delay = Math.min(idx * 90, 450);
+        el.style.transitionDelay = delay + 'ms';
+        el.classList.add('reveal');
+        io.unobserve(el);
+      }
+    });
+  }, { threshold: .15, rootMargin: '0px 0px -60px 0px' });
+
+  document.querySelectorAll(revealSelectors).forEach(el => io.observe(el));
+
+});
+</script>
+</body>
+</html>

@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AK-POT — Contacto</title>
+<link rel="icon" type="image/png" href="img/car.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg-0:#040506;
+    --bg-1:#07090c;
+    --bg-panel:#0c0f14;
+    --bg-panel-2:#12161d;
+    --line:#1c2129;
+    --line-soft:#14181f;
+    --blue:#2f6bff;
+    --blue-bright:#5b8dff;
+    --green:#3dfb8f;
+    --green-2:#1fbf63;
+    --green-dim:#0e2b1c;
+    --red:#ff5a5a;
+    --purple:#a855f7;
+    --text-0:#f6f8fb;
+    --text-1:#a7afbd;
+    --text-2:#616b7c;
+    --font-display:'Barlow Condensed', 'Arial Narrow', sans-serif;
+    --font-body:'Inter', 'Segoe UI', Arial, sans-serif;
+  }
+
+  *{box-sizing:border-box;}
+  html,body{margin:0;padding:0;}
+
+  body{
+    background:
+      linear-gradient(180deg, rgba(4,5,6,.55) 0%, rgba(5,6,8,.8) 45%, rgba(4,5,6,.94) 100%),
+      url('img/hero.jpg');
+    background-size:cover;
+    background-position:center top;
+    background-repeat:no-repeat;
+    background-attachment:fixed;
+    color:var(--text-0);
+    font-family:var(--font-body);
+    min-height:100vh;
+  }
+
+  a{ color:inherit; }
+  img{ max-width:100%; display:block; }
+  ::selection{ background:var(--blue); color:#fff; }
+
+  .wrap{ max-width:1180px; margin:0 auto; padding-inline:20px; }
+
+  /* ---------- HEADER (idéntico a index.html / compatibilidad.html) ---------- */
+  .header{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:1.4rem clamp(1.25rem, 5vw, 6rem);
+    display:flex; align-items:center; justify-content:space-between;
+    border-bottom:1px solid transparent;
+    transition: padding .55s cubic-bezier(.16,1,.3,1), background .55s, border-color .55s, backdrop-filter .55s;
+  }
+  .header.scrolled{
+    padding:.8rem clamp(1.25rem, 5vw, 6rem);
+    background: color-mix(in srgb, var(--bg-0) 78%, transparent);
+    backdrop-filter: blur(16px) saturate(140%);
+    -webkit-backdrop-filter: blur(16px) saturate(140%);
+    border-bottom:1px solid var(--line-soft);
+  }
+  .header__logo{ display:flex; align-items:center; gap:.7rem; }
+  .header__logo img{ height:72px; width:auto; object-fit:contain; }
+  .header__nav{ display:none; align-items:center; gap:2.2rem; }
+  .header__nav a{ font-family:'JetBrains Mono', monospace; font-size:.82rem; text-transform:uppercase; letter-spacing:.04em; color:var(--text-1); text-decoration:none; transition:color .15s ease; }
+  .header__nav a:hover{ color:var(--text-0); }
+  .header__nav a.active{ color:var(--blue-bright); }
+  @media (min-width:900px){
+    .header__nav{ display:flex; }
+  }
+  .header__actions{ display:flex; align-items:center; gap:.9rem; }
+  .btn-nico{
+    display:inline-flex; align-items:center; gap:.55em;
+    padding:.75em 1.4em;
+    border-radius:999px;
+    font-family:'JetBrains Mono', monospace;
+    font-weight:600;
+    font-size:.84rem;
+    letter-spacing:.03em;
+    color:#fff;
+    background: linear-gradient(135deg, var(--blue), #0000fa);
+    box-shadow:0 10px 26px -10px rgba(47,107,255,.6);
+    transition: transform .3s cubic-bezier(.16,1,.3,1), box-shadow .3s cubic-bezier(.16,1,.3,1);
+    white-space:nowrap;
+    text-decoration:none;
+  }
+  .btn-nico:hover{ transform:translateY(-3px); box-shadow:0 16px 34px -10px rgba(47,107,255,.75); }
+  .btn-nico .dot{ width:7px; height:7px; border-radius:50%; background:#fff; box-shadow:0 0 0 3px rgba(255,255,255,.25); animation: blink 2.4s ease-in-out infinite; flex-shrink:0; }
+  @keyframes blink{ 0%,100%{ opacity:1; } 50%{ opacity:.4; } }
+  .header__burger{ display:flex; width:42px; height:42px; border-radius:50%; background:var(--bg-panel); align-items:center; justify-content:center; flex-direction:column; gap:5px; flex-shrink:0; border:none; cursor:pointer; }
+  .header__burger span{ width:18px; height:2px; background:var(--text-0); border-radius:2px; transition: transform .3s cubic-bezier(.16,1,.3,1), opacity .3s; }
+  .header__burger.active span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  .header__burger.active span:nth-child(2){ opacity:0; }
+  .header__burger.active span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+  .mobile-menu{
+    position:fixed; inset:0; z-index:190;
+    background: color-mix(in srgb, var(--bg-0) 97%, transparent);
+    backdrop-filter: blur(20px);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2rem;
+    transform: translateY(-100%);
+    transition: transform .55s cubic-bezier(.16,1,.3,1);
+  }
+  .mobile-menu.open{ transform:translateY(0); }
+  .mobile-menu a{ font-family:var(--font-display); font-size:1.5rem; font-weight:700; color:var(--text-0); text-decoration:none; }
+
+  /* ---------- HERO ---------- */
+  .page-hero{
+    padding:clamp(7.5rem, 15vw, 10rem) 0 2.6rem;
+  }
+  .page-hero__tag{
+    font-family:'JetBrains Mono', monospace;
+    font-size:.78rem;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--blue-bright);
+    display:flex; align-items:center; gap:.5rem;
+    margin-bottom:.8rem;
+  }
+  .page-hero__tag::before{ content:''; width:6px; height:6px; border-radius:50%; background:var(--blue-bright); }
+  .page-hero h1{
+    font-family:var(--font-display);
+    font-weight:800;
+    font-style:italic;
+    font-size:clamp(2.6rem, 8vw, 5rem);
+    line-height:.95;
+    letter-spacing:-.01em;
+    margin:0 0 1rem;
+    text-transform:uppercase;
+  }
+  .page-hero__rule{
+    width:140px; height:5px; border-radius:3px;
+    background:repeating-linear-gradient(90deg, var(--blue-bright) 0 14px, transparent 14px 20px);
+    margin-bottom:1.3rem;
+  }
+  .page-hero p{
+    max-width:46ch;
+    font-size:1.02rem;
+    color:var(--text-1);
+    line-height:1.55;
+    margin:0;
+  }
+
+  /* ---------- CONTACT LAYOUT ---------- */
+  .contact-grid{
+    display:grid;
+    grid-template-columns:1fr;
+    gap:1.6rem;
+    padding-bottom:3rem;
+  }
+  @media (min-width:900px){
+    .contact-grid{ grid-template-columns:1.35fr 1fr; align-items:start; }
+  }
+
+  .panel{
+    background:rgba(10,12,16,.72);
+    border:1px solid var(--line-soft);
+    border-radius:20px;
+    padding:clamp(1.4rem, 3vw, 2.2rem);
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+
+  .panel__head{ display:flex; align-items:flex-start; gap:.9rem; margin-bottom:1.4rem; }
+  .panel__icon{
+    width:44px; height:44px; flex-shrink:0; border-radius:12px;
+    background:rgba(47,107,255,.14); color:var(--blue-bright);
+    display:flex; align-items:center; justify-content:center;
+  }
+  .panel__icon svg{ width:22px; height:22px; }
+  .panel__head h2{ font-family:var(--font-display); font-weight:800; font-size:1.15rem; letter-spacing:.02em; margin:0 0 .2rem; text-transform:uppercase; }
+  .panel__head p{ margin:0; color:var(--text-1); font-size:.9rem; }
+
+  /* form */
+  .field{
+    display:flex; align-items:center; gap:.7rem;
+    background:var(--bg-panel);
+    border:1px solid var(--line);
+    border-radius:12px;
+    padding:.85rem 1rem;
+    margin-bottom:.9rem;
+  }
+  .field svg{ width:18px; height:18px; color:var(--text-2); flex-shrink:0; }
+  .field input, .field textarea{
+    flex:1; background:transparent; border:none; outline:none;
+    color:var(--text-0); font-family:var(--font-body); font-size:.92rem;
+  }
+  .field input::placeholder, .field textarea::placeholder{ color:var(--text-2); }
+  .field textarea{ resize:vertical; min-height:96px; padding-top:.15rem; }
+  .field-row{ display:grid; grid-template-columns:1fr; gap:.9rem; }
+  @media (min-width:560px){
+    .field-row{ grid-template-columns:1fr 1fr; }
+  }
+  .field-row .field{ margin-bottom:0; }
+
+  .btn-submit{
+    width:100%;
+    display:flex; align-items:center; justify-content:center; gap:.6rem;
+    padding:1rem 1.2rem;
+    border:none; border-radius:12px; cursor:pointer;
+    font-family:'JetBrains Mono', monospace; font-weight:700; font-size:.88rem;
+    letter-spacing:.06em; text-transform:uppercase;
+    color:#fff;
+    background:linear-gradient(90deg, var(--blue), var(--purple));
+    box-shadow:0 14px 30px -14px rgba(80,60,255,.65);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s;
+    margin-top:.3rem;
+  }
+  .btn-submit:hover{ transform:translateY(-2px); box-shadow:0 18px 36px -14px rgba(80,60,255,.8); }
+  .btn-submit svg{ width:18px; height:18px; }
+  .form-note{ font-size:.78rem; color:var(--text-2); text-align:center; margin-top:.7rem; }
+  .form-status{ font-size:.85rem; text-align:center; margin-top:.7rem; min-height:1.2em; }
+  .form-status.ok{ color:var(--green); }
+  .form-status.err{ color:var(--red); }
+
+  /* otros medios */
+  .contact-methods h2{
+    font-family:var(--font-display); font-weight:800; font-size:1.15rem;
+    letter-spacing:.02em; text-transform:uppercase; margin:0 0 .3rem;
+  }
+  .contact-methods .rule{ width:60px; height:4px; border-radius:2px; background:var(--blue-bright); margin-bottom:1.3rem; }
+
+  .method-card{
+    display:flex; align-items:center; gap:1rem;
+    background:rgba(10,12,16,.72);
+    border:1px solid var(--line-soft);
+    border-radius:16px;
+    padding:1.1rem 1.2rem;
+    margin-bottom:.9rem;
+    backdrop-filter:blur(14px) saturate(140%);
+    -webkit-backdrop-filter:blur(14px) saturate(140%);
+  }
+  .method-card__icon{
+    width:46px; height:46px; flex-shrink:0; border-radius:50%;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .method-card__icon svg{ width:22px; height:22px; }
+  .method-card__icon.green{ background:rgba(61,251,143,.14); color:var(--green); }
+  .method-card__icon.blue{ background:rgba(91,141,255,.14); color:var(--blue-bright); }
+  .method-card__icon.purple{ background:rgba(168,85,247,.14); color:var(--purple); }
+  .method-card__body{ flex:1; min-width:0; }
+  .method-card__body h3{ margin:0 0 .15rem; font-size:.95rem; font-weight:700; }
+  .method-card__body p{ margin:0; font-size:.82rem; color:var(--text-1); line-height:1.4; }
+  .method-card__cta{
+    flex-shrink:0;
+    display:inline-flex; align-items:center; gap:.4rem;
+    padding:.55rem 1rem;
+    border-radius:999px;
+    font-size:.8rem; font-weight:700;
+    text-decoration:none;
+    white-space:nowrap;
+    transition:transform .2s ease, background .2s ease;
+  }
+  .method-card__cta:hover{ transform:translateY(-2px); }
+  .method-card__cta.green{ color:var(--green); border:1px solid rgba(61,251,143,.4); background:rgba(61,251,143,.08); }
+  .method-card__cta.green:hover{ background:rgba(61,251,143,.16); }
+  .method-card__cta.blue{ color:var(--blue-bright); border:1px solid rgba(91,141,255,.4); background:rgba(91,141,255,.08); }
+  .method-card__cta.blue:hover{ background:rgba(91,141,255,.16); }
+  .method-card__cta.purple{ color:var(--purple); border:1px solid rgba(168,85,247,.4); background:rgba(168,85,247,.08); }
+  .method-card__cta.purple:hover{ background:rgba(168,85,247,.16); }
+  .method-card__cta svg{ width:15px; height:15px; }
+
+  /* ---------- FEATURE STRIP ---------- */
+  .strip{
+    border-top:1px solid var(--line-soft);
+    border-bottom:1px solid var(--line-soft);
+    background:rgba(6,7,10,.55);
+    backdrop-filter:blur(10px);
+    -webkit-backdrop-filter:blur(10px);
+    padding:2.4rem 0;
+  }
+  .strip__grid{
+    display:grid; grid-template-columns:1fr; gap:1.6rem;
+  }
+  @media (min-width:720px){
+    .strip__grid{ grid-template-columns:repeat(4,1fr); }
+  }
+  .strip__item{ display:flex; gap:.9rem; align-items:flex-start; }
+  .strip__item svg{ width:26px; height:26px; color:var(--blue-bright); flex-shrink:0; }
+  .strip__item h4{ margin:0 0 .25rem; font-size:.92rem; font-weight:700; }
+  .strip__item p{ margin:0; font-size:.8rem; color:var(--text-1); line-height:1.4; }
+
+  /* ---------- FOOTER ---------- */
+  .footer{ padding:2.4rem 0 2rem; }
+  .footer__bottom{
+    display:flex; flex-wrap:wrap; gap:1rem;
+    justify-content:space-between; align-items:center;
+    padding-top:1.6rem;
+    font-size:.78rem; color:var(--text-2);
+  }
+  .footer__top-row{
+    display:flex; flex-wrap:wrap; gap:1rem;
+    justify-content:space-between; align-items:center;
+    padding-bottom:1.6rem;
+    border-bottom:1px solid var(--line-soft);
+  }
+  .footer__social{ display:flex; gap:.7rem; }
+  .footer__social a{
+    width:34px; height:34px; border-radius:50%;
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    transition:border-color .2s, background .2s;
+  }
+  .footer__social a:hover{ border-color:var(--blue-bright); background:rgba(91,141,255,.1); }
+  .footer__social svg{ width:16px; height:16px; }
+  .footer__secure{ display:flex; align-items:center; gap:.6rem; }
+  .footer__secure svg{ width:20px; height:20px; color:var(--green); flex-shrink:0; }
+  .footer__secure div p{ margin:0; }
+  .footer__secure div p:first-child{ font-weight:700; font-size:.82rem; color:var(--text-0); }
+  .footer__secure div p:last-child{ font-size:.76rem; color:var(--text-2); }
+
+  /* ---------- WHATSAPP FAB ---------- */
+  .wa-fab-btn{
+    position:fixed; right:20px; bottom:20px; z-index:150;
+    width:56px; height:56px; border-radius:50%;
+    background:linear-gradient(135deg,#25D366,#128C7E);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow:0 12px 26px -8px rgba(37,211,102,.6);
+    text-decoration:none;
+  }
+  .wa-fab-btn svg{ width:26px; height:26px; color:#fff; }
+</style>
+</head>
+<body>
+
+<header class="header">
+  <a href="index.html#top" class="header__logo">
+    <img src="img/akpot.logo.jpg" alt="AK-POT">
+  </a>
+  <nav class="header__nav">
+    <a href="index.html#top">Inicio</a>
+    <a href="compatibilidad.html">Compatibilidad</a>
+    <a href="contacto.html" class="active">Contacto</a>
+    <a href="index.html#productos">Nuestros productos</a>
+  </nav>
+  <div class="header__actions">
+    <a href="index.html#top" class="btn-nico"><span class="dot"></span>Nico#N3F</a>
+    <button class="header__burger" aria-label="Abrir menú" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+
+<div class="mobile-menu">
+  <a href="index.html#top">Inicio</a>
+  <a href="compatibilidad.html">Compatibilidad</a>
+  <a href="contacto.html">Contacto</a>
+  <a href="index.html#productos">Nuestros productos</a>
+</div>
+
+<section class="page-hero">
+  <div class="wrap">
+    <span class="page-hero__tag">AK-POT</span>
+    <h1>Contacto</h1>
+    <div class="page-hero__rule"></div>
+    <p>Estamos para ayudarte. Escribinos y te responderemos a la brevedad.</p>
+  </div>
+</section>
+
+<section class="wrap">
+  <div class="contact-grid">
+
+    <!-- FORMULARIO -->
+    <div class="panel">
+      <div class="panel__head">
+        <div class="panel__icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+        </div>
+        <div>
+          <h2>Envianos un mensaje</h2>
+          <p>Completá el formulario y te responderemos.</p>
+        </div>
+      </div>
+
+      <form id="contactForm">
+        <div class="field-row">
+          <label class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            <input type="text" name="nombre" placeholder="Nombre completo" required>
+          </label>
+          <label class="field">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+            <input type="email" name="email" placeholder="Email" required>
+          </label>
+        </div>
+        <label class="field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
+          <input type="text" name="asunto" placeholder="Asunto" required>
+        </label>
+        <label class="field" style="align-items:flex-start;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:.15rem;"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+          <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+        </label>
+
+        <button type="submit" class="btn-submit">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
+          Enviar mensaje
+        </button>
+        <p class="form-status" id="formStatus"></p>
+        <p class="form-note">Al enviar, se abrirá tu app de WhatsApp con el mensaje ya redactado.</p>
+      </form>
+    </div>
+
+    <!-- OTROS MEDIOS -->
+    <div class="contact-methods">
+      <h2>Otros medios de contacto</h2>
+      <div class="rule"></div>
+
+      <div class="method-card">
+        <div class="method-card__icon green">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm0 18.09a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.32c0-4.53 3.69-8.22 8.24-8.22 4.54 0 8.23 3.69 8.23 8.22 0 4.54-3.7 8.18-8.24 8.18zm4.52-6.16c-.25-.12-1.46-.72-1.68-.8-.23-.08-.4-.12-.56.13-.17.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.22-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.16.04-.3-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.17.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+        </div>
+        <div class="method-card__body">
+          <h3>WhatsApp ventas</h3>
+          <p>Consultá stock, precios y hacé tu pedido.</p>
+        </div>
+        <a href="https://wa.me/c/5491149756860" target="_blank" rel="noopener" class="method-card__cta green">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2z"/></svg>
+          Abrir chat
+        </a>
+      </div>
+
+      <div class="method-card">
+        <div class="method-card__icon green">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm0 18.09a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.32c0-4.53 3.69-8.22 8.24-8.22 4.54 0 8.23 3.69 8.23 8.22 0 4.54-3.7 8.18-8.24 8.18z"/></svg>
+        </div>
+        <div class="method-card__body">
+          <h3>WhatsApp consultas</h3>
+          <p>Dudas técnicas o de instalación, atención particular.</p>
+        </div>
+        <a href="https://www.whatsapp.com/catalog/5491165565186/?app_absent=0" target="_blank" rel="noopener" class="method-card__cta green">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2z"/></svg>
+          Abrir chat
+        </a>
+      </div>
+
+      <div class="method-card">
+        <div class="method-card__icon blue">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+        </div>
+        <div class="method-card__body">
+          <h3>Email</h3>
+          <p>Enviános un correo y te responderemos.</p>
+        </div>
+        <a href="mailto:contacto@akpot.com.ar" class="method-card__cta blue" id="emailCta">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
+          Enviar email
+        </a>
+      </div>
+
+      <div class="method-card">
+        <div class="method-card__icon purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        </div>
+        <div class="method-card__body">
+          <h3>Ubicación</h3>
+          <p>Buenos Aires, Argentina</p>
+        </div>
+        <a href="https://www.google.com/maps/search/?api=1&query=Buenos+Aires+Argentina" target="_blank" rel="noopener" class="method-card__cta purple">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 6-9 12-9 12s-9-6-9-12a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          Ver en el mapa
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<section class="strip">
+  <div class="wrap strip__grid">
+    <div class="strip__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 18v-6a9 9 0 0118 0v6"/><path d="M21 19a2 2 0 01-2 2h-1a2 2 0 01-2-2v-3a2 2 0 012-2h3zM3 19a2 2 0 002 2h1a2 2 0 002-2v-3a2 2 0 00-2-2H3z"/></svg>
+      <div>
+        <h4>Atención personalizada</h4>
+        <p>Te asesoramos para encontrar el producto compatible con tu vehículo.</p>
+      </div>
+    </div>
+    <div class="strip__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6z"/><path d="M9 12l2 2 4-4"/></svg>
+      <div>
+        <h4>Confianza garantizada</h4>
+        <p>Productos de calidad con garantía y soporte postventa.</p>
+      </div>
+    </div>
+    <div class="strip__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg>
+      <div>
+        <h4>Horarios de atención</h4>
+        <p>Lunes a viernes de 9:00 a 18:00 hs.</p>
+      </div>
+    </div>
+    <div class="strip__item">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 9V5a3 3 0 00-6 0v4M5 9h14l-1 11H6z"/></svg>
+      <div>
+        <h4>Soporte rápido</h4>
+        <p>Respondemos todas tus consultas por WhatsApp o Email.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="footer">
+  <div class="wrap">
+    <div class="footer__top-row">
+      <span style="font-size:.85rem; color:var(--text-1);">© 2026 AK-POT. Todos los derechos reservados.</span>
+      <div class="footer__social">
+        <a href="https://www.instagram.com/akpot_ok/" target="_blank" rel="noopener" aria-label="Instagram"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1"/></svg></a>
+        <a href="https://www.tiktok.com/@akpot_amortiguadoresok" target="_blank" rel="noopener" aria-label="TikTok"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 3v10.5a3.5 3.5 0 11-3-3.46V7a6.5 6.5 0 106.5 6.5V8.5c1 .7 2.2 1 3.5 1V6.5c-1.8 0-3.3-1.2-3.7-3H14z"/></svg></a>
+      </div>
+    </div>
+    <div class="footer__bottom">
+      <span>Seguinos en nuestras redes</span>
+      <div class="footer__secure">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="10" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+        <div>
+          <p>Compra segura</p>
+          <p>Todos nuestros productos cuentan con garantía.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<a class="wa-fab-btn" href="https://wa.me/c/5491149756860" target="_blank" rel="noopener" aria-label="WhatsApp">
+  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm0 18.09a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.32c0-4.53 3.69-8.22 8.24-8.22 4.54 0 8.23 3.69 8.23 8.22 0 4.54-3.7 8.18-8.24 8.18zm4.52-6.16c-.25-.12-1.46-.72-1.68-.8-.23-.08-.4-.12-.56.13-.17.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.22-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.16.04-.3-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.17.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
+</a>
+
+<script>
+/* =========================================================
+   ⚙️ CONFIGURACIÓN — datos de contacto reales del negocio
+   Reemplazá estos valores por los tuyos.
+   ========================================================= */
+const WHATSAPP_PHONE_NUMBER = "5491149756860"; // número al que se enviará el formulario
+const CONTACT_EMAIL = "contacto@akpot.com.ar"; // email real de contacto
+
+document.addEventListener('DOMContentLoaded', () => {
+  /* header scroll state + mobile menu (igual que index.html) */
+  const header = document.querySelector('.header');
+  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 60);
+  document.addEventListener('scroll', onScroll, { passive:true });
+  onScroll();
+
+  const burger = document.querySelector('.header__burger');
+  const mobileMenu = document.querySelector('.mobile-menu');
+  burger.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.toggle('open');
+    burger.classList.toggle('active', isOpen);
+    burger.setAttribute('aria-expanded', String(isOpen));
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
+    burger.classList.remove('active');
+    mobileMenu.classList.remove('open');
+    burger.setAttribute('aria-expanded', 'false');
+    document.body.style.overflow = '';
+  }));
+
+  /* email cta */
+  document.getElementById('emailCta').href = 'mailto:' + CONTACT_EMAIL;
+
+  /* contact form -> arma mensaje y abre WhatsApp */
+  const form = document.getElementById('contactForm');
+  const status = document.getElementById('formStatus');
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const nombre = form.nombre.value.trim();
+    const email = form.email.value.trim();
+    const asunto = form.asunto.value.trim();
+    const mensaje = form.mensaje.value.trim();
+
+    if(!nombre || !email || !asunto || !mensaje){
+      status.textContent = 'Completá todos los campos.';
+      status.className = 'form-status err';
+      return;
+    }
+
+    const texto = `Hola AK-POT! Mi nombre es ${nombre} (${email}).\nAsunto: ${asunto}\n\n${mensaje}`;
+    const url = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(texto)}`;
+    window.open(url, '_blank');
+
+    status.textContent = '¡Listo! Te llevamos a WhatsApp para enviar tu mensaje.';
+    status.className = 'form-status ok';
+    form.reset();
+  });
+});
+</script>
+</body>
+</html>
