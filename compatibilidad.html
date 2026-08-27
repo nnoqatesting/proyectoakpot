@@ -584,6 +584,48 @@
   .buy-btn:active{ transform:translateY(0); }
   .buy-btn svg{ width:20px;height:20px; }
 
+  /* ---- Contenedor de botones de compra ---- */
+  .buy-actions{
+    position:relative;
+    z-index:1;
+    margin-top:6px;
+    display:flex;
+    flex-wrap:wrap;
+    gap:12px;
+    justify-content:flex-start;
+  }
+  .buy-actions .buy-btn{ margin-top:0; }
+
+  /* ---- Botón Comprar en Mercado Libre (amarillo) ---- */
+  .ml-btn{
+    position:relative;
+    z-index:1;
+    display:inline-flex;
+    align-items:center;
+    gap:10px;
+    justify-content:center;
+    background:linear-gradient(135deg,#fff159,#ffd000);
+    color:#1a1a1a;
+    border:none;
+    padding:15px 40px;
+    border-radius:12px;
+    font-family:var(--font-body);
+    font-weight:800;
+    font-size:15px;
+    letter-spacing:0.04em;
+    cursor:pointer;
+    text-decoration:none;
+    box-shadow:0 10px 26px rgba(255,208,0,0.35);
+    transition:transform .12s ease, box-shadow .12s ease, filter .12s ease;
+  }
+  .ml-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 14px 32px rgba(255,208,0,0.45);
+    filter:brightness(1.05);
+  }
+  .ml-btn:active{ transform:translateY(0); }
+  .ml-btn svg{ width:20px;height:20px; }
+
   /* ---- Botón YouTube (tutorial de instalación) ---- */
   .yt-btn{
     position:relative;
@@ -812,7 +854,7 @@
       <div class="help-icon">i</div>
       <p><b>¿No encontrás tu vehículo?</b>Contactanos por WhatsApp y te ayudamos a verificar la compatibilidad.</p>
     </div>
-    <a class="wa-btn" href="https://wa.me/5490000000000" target="_blank" rel="noopener">💬 Contactar por WhatsApp</a>
+    <a class="wa-btn" href="https://wa.me/5491135488807" target="_blank" rel="noopener">💬 Contactar por WhatsApp</a>
   </div>
 </div>
 
@@ -846,30 +888,186 @@ document.addEventListener('DOMContentLoaded', () => {
    Reemplazá el valor de abajo por tu número real,
    con código de país y sin signos (ej: "5491122334455").
    ========================================================= */
-const WHATSAPP_PHONE_NUMBER = "5490000000000";
+const WHATSAPP_PHONE_NUMBER = "5491135488807";
 
 
 /* =========================================================
    ⚙️ CONFIGURACIÓN — CANAL DE YOUTUBE (tutorial de instalación)
    ========================================================= */
 const YOUTUBE_CHANNEL_URL = "https://www.youtube.com/@akpot8146";
+const MERCADOLIBRE_STORE_URL = "https://www.mercadolibre.com.ar/tienda/ak-pot";
 
 /* =========================================================
-   BASE DE DATOS DE VEHÍCULOS (mercado argentino)
+   BASE DE DATOS DE VEHÍCULOS — LISTA AK-POT
+   (reemplazada según lista oficial provista)
    ========================================================= */
+function yr(start, end){
+  const arr = [];
+  for(let y = start; y <= end; y++) arr.push(y);
+  return arr;
+}
+const ANIO_TOPE = 2026; // tope usado para modelos "en adelante" (+)
+
 const carDatabase = {
-  "Chevrolet": {"Agile":[2009,2010,2011,2012,2013,2014,2015],"Astra":[1998,2000,2003,2005,2008,2010,2011],"Aveo G2/G3":[2006,2008,2010,2011,2012,2014,2016,2017],"Corsa / Classic":[2000,2005,2008,2010,2012,2014,2016],"Meriva":[2003,2005,2007,2009,2010],"Montana":[2003,2005,2007,2010,2023,2024,2025,2026],"Onix":[2013,2016,2019,2020,2021,2022,2023,2024,2025,2026],"Prisma":[2013,2016,2019,2020],"Cruze":[2011,2016,2019,2021,2022,2023,2024],"S10":[2012,2013,2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"Sonic":[2012,2013,2014,2015,2016],"Tracker":[2014,2017,2020,2022,2023,2024,2025,2026],"Spin":[2012,2013,2014,2015,2016,2017,2018],"Chevette":[1980,1983,1985,1988,1990,1993],"Celta":[2000,2003,2006,2009,2012,2015],"Zafira":[2001,2003,2005,2008,2010,2012]},
-  "Citroën": {"C3":[2004,2010,2016,2022,2023,2024,2025,2026],"C4 Cactus":[2017,2019,2021,2023,2024,2025,2026],"Berlingo (1995-2009)":[1995,1997,1999,2001,2003,2005,2007,2009],"Berlingo (2010 en adelante)":[2010,2012,2014,2016,2018,2020,2022,2024,2025,2026],"Basalt":[2024,2025,2026],"C3 Aircross (2011-2020)":[2011,2013,2015,2017,2019,2020],"C3 Picasso (2011-2017)":[2011,2013,2015,2017],"C4 G1":[2005,2007,2009,2011,2013],"C4 G2":[2013,2015,2017,2019,2021],"C-Elysée":[2013,2015,2017,2019,2021,2023,2025]},
-  "Fiat": {"Argo":[2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"Bravo":[2010,2012,2014,2016],"Cronos":[2018,2019,2020,2021,2022,2023,2024,2025,2026],"Fastback":[2023,2024,2025,2026],"Fiorino":[2005,2010,2013,2020,2022,2024,2025,2026],"Fiorino Evo Novo Fase 1":[2014,2015,2016,2017],"Fiorino Evo Novo Fase 2":[2018,2019,2020,2021],"Gran Siena":[2013,2014,2015,2016,2017,2018],"Mobi":[2016,2018,2020,2022,2024,2025,2026],"Palio Novo":[2012,2013,2014,2015,2016,2017],"Palio, Siena y Strada G1":[1996,1998,2000,2002,2004],"Palio, Siena y Strada Fire":[2004,2006,2008,2010,2012],"Pulse":[2022,2023,2024,2025,2026],"Punto (2007-2012)":[2007,2008,2009,2010,2011,2012],"Punto (2013-2017)":[2013,2014,2015,2016,2017],"Regatta":[1983,1985,1987,1989],"Strada":[2010,2015,2020],"Strada Novo":[2021,2022,2023,2024,2025,2026],"Toro Fase 1":[2016,2017,2018,2019],"Toro Fase 2":[2020,2021,2022,2023,2024,2025,2026],"Uno":[2004,2010,2016,2020],"Uno, Duna, Fiorino Original":[1985,1988,1991,1994,1997,2000],"Uno Duna Racing 1 (guardabarros)":[1991,1992,1993,1994],"Uno Duna Racing 2 (torreta)":[1995,1996,1997],"Uno Way":[2011,2013,2015,2017,2019,2021]},
-  "Ford": {"EcoSport":[2004,2008,2012,2017,2020,2022],"EcoSport G1 (2003-2007)":[2003,2004,2005,2006,2007],"EcoSport G2 (2008-2012)":[2008,2009,2010,2011,2012],"EcoSport G3 (2012-2017)":[2012,2013,2014,2015,2016,2017],"Ranger":[2005,2012,2016,2020,2023,2024,2025,2026],"Ranger (1998-2011)":[1998,2000,2002,2004,2006,2008,2010,2011],"Ranger (2012-2016)":[2012,2013,2014,2015,2016],"Ranger (2023 en adelante)":[2023,2024,2025,2026],"Focus":[2005,2009,2014,2017,2019],"Focus II":[2005,2007,2009],"Focus III y Restailing":[2012,2014,2016,2018],"Fiesta":[2005,2011,2015,2018,2020],"Fiesta Max":[2003,2005,2007,2009],"Territory":[2020,2022,2023,2024,2025,2026],"Maverick":[2022,2023,2024,2025,2026],"Kuga":[2010,2015,2020,2023,2025,2026],"Kuga MK1 (2010-2013)":[2010,2011,2012,2013],"Kuga MK2 (2013-2018)":[2013,2014,2015,2016,2017,2018],"F-150":[2020,2022,2024,2025,2026],"Bronco Sport":[2021,2022,2023,2024,2025,2026],"Escort MK5/Orion y Escort MK6":[1991,1993,1995,1997,2000,2002],"Everest":[2004,2007,2010,2015,2020,2023,2024,2025,2026],"F100 (1981-1999)":[1981,1985,1990,1995,1999],"Ka G3 (2014 en adelante)":[2014,2015,2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"Mondeo MK4-MK5 (2008-2020)":[2008,2010,2012,2014,2016,2018,2020],"Raptor (2023 en adelante)":[2023,2024,2025,2026],"Taunus":[1974,1978,1981,1985]},
-  "Honda": {"Civic":[2006,2012,2017,2021,2023,2025,2026],"HR-V":[2015,2018,2021,2023,2024,2025,2026],"CR-V":[2008,2012,2017,2020,2024,2025,2026],"CRV G1 (1995-2001)":[1995,1997,1999,2001],"Fit":[2005,2009,2015,2018,2021],"City":[2010,2015,2021,2023,2025,2026],"Accord 1994-1998":[1994,1995,1996,1997,1998]},
-  "Jeep": {"Renegade":[2016,2018,2020,2022,2023,2024,2025,2026],"Compass":[2012,2017,2020,2022,2023,2024,2025,2026],"Commander":[2021,2022,2023,2024,2025,2026],"Wrangler":[2010,2015,2019,2022,2024,2025,2026]},
-  "Nissan": {"Frontier":[2010,2016,2019,2022,2023,2024,2025,2026],"Frontier (2016 en adelante)":[2016,2017,2018,2019,2020,2021,2022,2023,2024,2025,2026],"Kicks":[2017,2019,2021,2023,2024,2025,2026],"Versa":[2013,2017,2020,2023,2024,2025,2026],"Versa N17 (2012-2019)":[2012,2013,2014,2015,2016,2017,2018,2019],"Sentra":[2011,2015,2020,2024,2025,2026],"Sentra B17 G7 (2014-2019)":[2014,2015,2016,2017,2018,2019],"Sentra B18 G8 (2020 en adelante)":[2020,2021,2022,2023,2024,2025,2026],"March":[2012,2015,2018,2021],"Patrol Y60":[1988,1990,1992,1994,1996,1997],"Tiida":[2007,2009,2011,2013,2015]},
-  "Peugeot": {"208":[2013,2016,2020,2022,2023,2024,2025,2026],"208 Línea Nueva":[2019,2020,2021,2022,2023,2024,2025,2026],"2008":[2016,2019,2022,2024,2025,2026],"3008":[2011,2017,2021,2024,2025,2026],"Partner":[2005,2010,2015,2020,2023,2024,2025,2026],"Partner (1995-2009)":[1996,1998,2000,2002,2004,2006,2008,2009],"Partner (2010 en adelante)":[2010,2012,2014,2016,2018,2020,2022,2024,2025,2026],"207 Compact":[2008,2011,2014,2016],"207":[2006,2008,2010,2012,2014],"206":[1999,2001,2003,2005,2007,2009],"301":[2013,2015,2017,2019,2021],"307 Línea Vieja (antes 2006)":[2001,2002,2003,2004,2005],"307 Línea Nueva (después de 2006)":[2006,2007,2008,2009,2010,2011],"308/408":[2011,2013,2015,2017,2019],"308 T9":[2014,2016,2018,2020,2021],"405":[1988,1990,1992,1994,1996],"504":[1969,1975,1980,1985,1990],"505":[1979,1983,1987,1991]},
-  "Renault": {"Sandero / Stepway":[2008,2015,2020,2022,2023,2024,2025,2026],"Sandero G1 y G2":[2008,2010,2012,2014],"Logan":[2007,2014,2020,2022,2023,2024,2025],"Duster":[2011,2016,2021,2023,2024,2025,2026],"Alaskan":[2020,2021,2022,2023,2024,2025,2026],"Kardian":[2024,2025,2026],"Kangoo":[2005,2010,2018,2021,2023,2024,2025,2026],"Clio Mio / Clio":[2000,2006,2012,2016],"Clio 2 Fase 2 - Clio Mío - Symbol":[2000,2003,2006,2009,2012],"9-11":[1982,1985,1988,1990],"18":[1981,1983,1985,1987],"19 (Sin Strut Bar)":[1992,1994,1996,1998,2000],"Fluence":[2010,2012,2014,2016,2017],"Fuego":[1982,1985,1988,1990],"Kwid":[2019,2020,2021,2022,2023,2024,2025,2026],"Megane 1 (Fase 2)":[1999,2001,2003]},
-  "Suzuki": {"Jimny":[2019,2021,2023,2025,2026],"Swift":[2008,2018,2022,2024,2025],"Fun":[2004,2006,2008,2010]},
-  "Toyota": {"Hilux":[2005,2012,2016,2020,2022,2023,2024,2025,2026],"Hilux G5 (1988-1996)":[1988,1990,1992,1994,1996],"Hilux G7 (2005-2011)":[2005,2007,2009,2011],"Hilux G7 (2012-2015)":[2012,2013,2014,2015],"Corolla":[2008,2014,2020,2023,2024,2025,2026],"Corolla G9 (2002-2008)":[2002,2003,2004,2005,2006,2007,2008],"Corolla G10 (2009-2013)":[2009,2010,2011,2012,2013],"Corolla G11 (2014-2019)":[2014,2015,2016,2017,2018,2019],"Corolla G13 (2024 en adelante)":[2024,2025,2026],"Corolla Cross":[2021,2022,2023,2024,2025,2026],"Yaris":[2016,2018,2021,2023,2024,2025,2026],"Yaris (no GR)":[2016,2018,2021,2023,2024,2025,2026],"Etios":[2013,2017,2020,2023],"SW4":[2006,2012,2016,2021,2023,2024,2025,2026]},
-  "Volkswagen": {"Gol Trend / Power":[2005,2008,2013,2017,2021],"Gol - Saveiro - Senda G1":[1980,1985,1990,1994],"Gol - Saveiro - Country G2":[1995,1997,1999],"Gol - Saveiro - Country G3 - G4":[1999,2002,2005,2008],"Gol, Saveiro G2-G3-G4 Racing (Viturro)":[1996,1999,2002,2005],"Gol - Saveiro - Voyage G5":[2008,2010,2012],"Gol - Saveiro - Voyage G6-G7-G8":[2013,2016,2019,2021],"Polo":[2018,2020,2022,2023,2024,2025,2026],"Polo G1 (1995-2008)":[1995,1998,2001,2004,2008],"Polo Novo":[2009,2011,2013,2015,2017],"Virtus":[2018,2020,2023,2024,2025,2026],"Amarok":[2010,2016,2020,2022,2024,2025,2026],"Amarok G1":[2010,2012,2014,2016],"Amarok G2":[2017,2019,2020,2022,2024,2025,2026],"Taos":[2021,2022,2023,2024,2025,2026],"Nivus":[2020,2022,2023,2024,2025,2026],"T-Cross":[2019,2021,2023,2024,2025,2026],"Vento":[2007,2011,2018,2022,2024,2025,2026],"Vento MK6":[2011,2013,2015,2017],"Suran":[2007,2011,2015,2019],"Suran - Fox (G1, G2, G3)":[2003,2005,2008,2010,2012,2014],"Golf MK3":[1992,1994,1996,1998],"Saveiro 2024 - Xtreme":[2024,2025,2026],"Santana":[1984,1988,1992,1995],"Pointer":[1994,1996,1998,2000],"Scirocco":[2009,2011,2013,2014],"Tera":[2023,2024,2025,2026],"Tiguan":[2009,2012,2017,2020,2022,2024,2025,2026],"Up":[2014,2016,2018,2020]},
+  "Chevrolet": {
+    "Agile": yr(2009,2016),
+    "Astra": yr(1999,2012),
+    "Aveo": yr(2008,2014),
+    "Corsa - Combo - Pick Up": yr(1994,2009),
+    "Classic": yr(2010,2018),
+    "Meriva": yr(2003,2013),
+    "Montana (Ágile)": yr(2011,2021),
+    "S10": yr(2012,ANIO_TOPE),
+    "Sonic": yr(2012,2017),
+    "Spin G1": yr(2012,2018),
+    "Chevette": yr(1992,1995),
+    "Celta": yr(2011,2015),
+    "Zafira": yr(2001,2012)
+  },
+  "Citroën": {
+    "Berlingo G1 F1": yr(1995,2009),
+    "Berlingo G1 F2": yr(2010,ANIO_TOPE),
+    "C3 Aircross": yr(2011,2020),
+    "C3 Picasso": yr(2011,2017),
+    "C4 G1": yr(2007,2014),
+    "C4 G2 F1 Lounge": yr(2013,2018),
+    "C-Elysée": yr(2016,2020)
+  },
+  "Fiat": {
+    "Argo": yr(2017,ANIO_TOPE),
+    "Bravo": yr(2012,2015),
+    "Cronos": yr(2018,ANIO_TOPE),
+    "Fiorino Evo F1": yr(2014,2022),
+    "Fiorino Evo F2": yr(2023,ANIO_TOPE),
+    "Gran Siena": yr(2012,2018),
+    "Mobi": yr(2016,ANIO_TOPE),
+    "Palio Novo 326": yr(2012,ANIO_TOPE),
+    "Palio - Siena - Strada G1": yr(1996,2000),
+    "Palio - Siena - Strada Fire": yr(2001,2017),
+    "Punto F1": yr(2007,2012),
+    "Punto F2": yr(2013,2017),
+    "Regatta": yr(1985,1995),
+    "Strada Novo": yr(2020,ANIO_TOPE),
+    "Uno - Duna - Fiorino Orig.": yr(1989,2004),
+    "Uno - Fiorino Fire": yr(2004,2013),
+    "Uno Way": yr(2011,2022),
+    "Toro F1": yr(2016,2021),
+    "Toro F2": yr(2021,ANIO_TOPE)
+  },
+  "Ford": {
+    "Bronco Sport": yr(2020,ANIO_TOPE),
+    "EcoSport G1": yr(2003,2007),
+    "EcoSport G2": yr(2008,2012),
+    "EcoSport G3": yr(2012,2017),
+    "Escort MK5 / Orion": yr(1990,1996),
+    "Escort MK6": yr(1996,2003),
+    "Everest": yr(2025,ANIO_TOPE),
+    "F100": yr(1981,1999),
+    "Fiesta Max MK5": yr(2002,2007),
+    "Fiesta Max MK6": yr(2008,2010),
+    "Focus II": yr(2008,2013),
+    "Focus III y KD": yr(2013,2019),
+    "Ka G3": yr(2014,2021),
+    "Kuga MK1": yr(2010,2013),
+    "Kuga MK2": yr(2013,2018),
+    "Mondeo MK4": yr(2008,2014),
+    "Mondeo MK5": yr(2015,2020),
+    "Ranger G3": yr(1998,2011),
+    "Ranger G4": yr(2012,2016),
+    "Ranger": yr(2023,ANIO_TOPE),
+    "Raptor": yr(2023,ANIO_TOPE),
+    "Taunus": yr(1974,1984)
+  },
+  "Honda": {
+    "Accord G5": yr(1994,1998),
+    "Civic G7": yr(2000,2005),
+    "CRV G1": yr(1995,2001)
+  },
+  "Jeep": {
+    "Commander": yr(2021,ANIO_TOPE),
+    "Compass G2": yr(2017,ANIO_TOPE),
+    "Renegade": yr(2014,ANIO_TOPE)
+  },
+  "Nissan": {
+    "Frontier": yr(2016,ANIO_TOPE),
+    "March": yr(2016,2021),
+    "Patrol Y60": yr(1990,1997),
+    "Sentra B16 G6": yr(2007,2012),
+    "Sentra B17 G7": yr(2013,2019),
+    "Sentra B18 G8": yr(2020,ANIO_TOPE),
+    "Tiida": yr(2007,2015),
+    "Versa N17": yr(2012,2019)
+  },
+  "Peugeot": {
+    "206": yr(1999,2013),
+    "207": yr(2008,2016),
+    "208 G2": yr(2019,ANIO_TOPE),
+    "301": yr(2017,2020),
+    "307 F1": yr(2004,2006),
+    "307 F2": yr(2006,2011),
+    "308": yr(2012,2021),
+    "408": yr(2011,2021),
+    "504": yr(1969,1999),
+    "505": yr(1981,1995),
+    "Partner F1": yr(1995,2009),
+    "Partner F2": yr(2010,ANIO_TOPE)
+  },
+  "Renault": {
+    "9-11": yr(1984,1997),
+    "18": yr(1981,1993),
+    "19 (Sin Strut Bar)": yr(1993,2000),
+    "Alaskan": yr(2020,2025),
+    "Clio 2 F2": yr(2003,2012),
+    "Clio Mio": yr(2012,2016),
+    "Fluence": yr(2010,2019),
+    "Fuego": yr(1981,1992),
+    "Kangoo G1": yr(1998,2018),
+    "Kwid": yr(2017,ANIO_TOPE),
+    "Logan": yr(2007,2013),
+    "Megane 1 F2": yr(1999,2010),
+    "Sandero G1 F1-F2": yr(2008,2015),
+    "Symbol": yr(2009,2014)
+  },
+  "Suzuki": {
+    "Fun": yr(2003,2011)
+  },
+  "Toyota": {
+    "Corolla G9": yr(2002,2008),
+    "Corolla G10": yr(2009,2013),
+    "Corolla G11": yr(2014,2019),
+    "Corolla G13": yr(2024,ANIO_TOPE),
+    "Etios": yr(2013,2023),
+    "Hilux G5": yr(1988,1996),
+    "Hilux G7 (2005-2011)": yr(2005,2011),
+    "Hilux G7 (2012-2015)": yr(2012,2015),
+    "Yaris (no GR)": yr(2017,ANIO_TOPE)
+  },
+  "Volkswagen": {
+    "Amarok": yr(2010,ANIO_TOPE),
+    "Fox G1/2/3": yr(2015,2020),
+    "Gol - Saveiro - Senda G1": yr(1991,1997),
+    "Gol - Saveiro - Country G2": yr(1995,2000),
+    "Gol - Saveiro - Country G3/4": yr(1999,2014),
+    "Gol - Saveiro - Voyage G5": yr(2008,2012),
+    "Gol - Voyage G6/7/8": yr(2013,2021),
+    "Golf MK3": yr(1995,1999),
+    "Nivus": yr(2020,ANIO_TOPE),
+    "Santana": yr(2000,2007),
+    "Saveiro G6-G7-G8-Xtreme": yr(2013,ANIO_TOPE),
+    "Pointer": yr(1994,1996),
+    "Polo G1": yr(1995,2008),
+    "Polo G6 y Track": yr(2018,ANIO_TOPE),
+    "Quantum": yr(1991,2001),
+    "Scirocco": yr(2012,2018),
+    "Suran G1/2/3": yr(2006,2019),
+    "Taos": yr(2021,ANIO_TOPE),
+    "Tera": yr(2025,ANIO_TOPE),
+    "T-Cross": yr(2019,ANIO_TOPE),
+    "Tiguan G1": yr(2007,2016),
+    "Up": yr(2014,2021),
+    "Vento MK6": yr(2011,2018),
+    "Virtus": yr(2018,ANIO_TOPE)
+  }
 };
 
 /* Composición fija del kit (misma para todo vehículo compatible) */
@@ -881,169 +1079,15 @@ const KIT_ITEMS = [
 ];
 
 /* =========================================================
-   ✅ MODELOS DISPONIBLES (whitelist)
-   Por defecto, TODOS los vehículos figuran como "no disponible".
-   Para habilitar un modelo, agregá una línea con el formato:
-   "Marca|Modelo"        -> habilita TODOS los años de ese modelo
-   "Marca|Modelo|Año"     -> habilita solo ese año puntual
-   Ejemplo:
-     "Toyota|Hilux",
-     "Ford|Ranger|2023",
+   ✅ MODELOS DISPONIBLES
+   Todos los modelos de la Lista AK-POT están habilitados
+   en su totalidad (se generan automáticamente a partir de
+   carDatabase, sin necesidad de mantener una lista aparte).
    ========================================================= */
-const AVAILABLE_MODELS = [
-  // --- Chevrolet ---
-  "Chevrolet|Agile",
-  "Chevrolet|Astra",
-  "Chevrolet|Aveo G2/G3",
-  "Chevrolet|Corsa / Classic",
-  "Chevrolet|Meriva",
-  "Chevrolet|Montana",
-  "Chevrolet|S10",          // 2012 en adelante (ya cargado así en la base)
-  "Chevrolet|Sonic",
-  "Chevrolet|Spin",         // 2012 a 2018 (ya cargado así en la base)
-  "Chevrolet|Chevette",
-  "Chevrolet|Celta",
-  "Chevrolet|Zafira",
+const AVAILABLE_MODELS = Object.keys(carDatabase).flatMap(marca =>
+  Object.keys(carDatabase[marca]).map(modelo => `${marca}|${modelo}`)
+);
 
-  // --- Citroën ---
-  "Citroën|Berlingo (1995-2009)",
-  "Citroën|Berlingo (2010 en adelante)",
-  "Citroën|C3 Aircross (2011-2020)",
-  "Citroën|C3 Picasso (2011-2017)",
-  "Citroën|C4 G1",
-  "Citroën|C4 G2",
-  "Citroën|C-Elysée",
-
-  // --- Fiat ---
-  "Fiat|Argo",
-  "Fiat|Bravo",
-  "Fiat|Cronos",
-  "Fiat|Fiorino Evo Novo Fase 1",
-  "Fiat|Fiorino Evo Novo Fase 2",
-  "Fiat|Gran Siena",
-  "Fiat|Mobi",
-  "Fiat|Palio Novo",
-  "Fiat|Palio, Siena y Strada G1",
-  "Fiat|Palio, Siena y Strada Fire",
-  "Fiat|Punto (2007-2012)",
-  "Fiat|Punto (2013-2017)",
-  "Fiat|Regatta",
-  "Fiat|Strada Novo",
-  "Fiat|Uno, Duna, Fiorino Original",
-  "Fiat|Uno Duna Racing 1 (guardabarros)",
-  "Fiat|Uno Duna Racing 2 (torreta)",
-  "Fiat|Uno Way",
-  "Fiat|Toro Fase 1",
-  "Fiat|Toro Fase 2",
-
-  // --- Ford ---
-  "Ford|Bronco Sport",
-  "Ford|EcoSport G1 (2003-2007)",
-  "Ford|EcoSport G2 (2008-2012)",
-  "Ford|EcoSport G3 (2012-2017)",
-  "Ford|Escort MK5/Orion y Escort MK6",
-  "Ford|Everest",
-  "Ford|F100 (1981-1999)",
-  "Ford|Fiesta Max",
-  "Ford|Focus II",
-  "Ford|Focus III y Restailing",
-  "Ford|Ka G3 (2014 en adelante)",
-  "Ford|Kuga MK1 (2010-2013)",
-  "Ford|Kuga MK2 (2013-2018)",
-  "Ford|Mondeo MK4-MK5 (2008-2020)",
-  "Ford|Ranger (1998-2011)",
-  "Ford|Ranger (2012-2016)",
-  "Ford|Ranger (2023 en adelante)",
-  "Ford|Raptor (2023 en adelante)",
-  "Ford|Taunus",
-
-  // --- Honda ---
-  "Honda|Accord 1994-1998",
-  "Honda|CRV G1 (1995-2001)",
-
-  // --- Jeep ---
-  "Jeep|Commander",
-  "Jeep|Compass",
-  "Jeep|Renegade",
-
-  // --- Nissan ---
-  "Nissan|Frontier (2016 en adelante)",
-  "Nissan|March",
-  "Nissan|Patrol Y60",
-  "Nissan|Sentra B17 G7 (2014-2019)",
-  "Nissan|Sentra B18 G8 (2020 en adelante)",
-  "Nissan|Tiida",
-  "Nissan|Versa N17 (2012-2019)",
-
-  // --- Peugeot ---
-  "Peugeot|206",
-  "Peugeot|207",
-  "Peugeot|208 Línea Nueva",
-  "Peugeot|301",
-  "Peugeot|307 Línea Vieja (antes 2006)",
-  "Peugeot|307 Línea Nueva (después de 2006)",
-  "Peugeot|308/408",
-  "Peugeot|308 T9",
-  "Peugeot|405",
-  "Peugeot|504",
-  "Peugeot|505",
-  "Peugeot|Partner (1995-2009)",
-  "Peugeot|Partner (2010 en adelante)",
-
-  // --- Renault ---
-  "Renault|9-11",
-  "Renault|18",
-  "Renault|19 (Sin Strut Bar)",
-  "Renault|Alaskan",
-  "Renault|Clio 2 Fase 2 - Clio Mío - Symbol",
-  "Renault|Fluence",
-  "Renault|Fuego",
-  "Renault|Kangoo",
-  "Renault|Kwid",
-  "Renault|Logan",
-  "Renault|Megane 1 (Fase 2)",
-  "Renault|Sandero G1 y G2",
-
-  // --- Suzuki ---
-  "Suzuki|Fun",
-
-  // --- Toyota ---
-  "Toyota|Corolla G9 (2002-2008)",
-  "Toyota|Corolla G10 (2009-2013)",
-  "Toyota|Corolla G11 (2014-2019)",
-  "Toyota|Corolla G13 (2024 en adelante)",
-  "Toyota|Etios",
-  "Toyota|Hilux G5 (1988-1996)",
-  "Toyota|Hilux G7 (2005-2011)",
-  "Toyota|Hilux G7 (2012-2015)",
-  "Toyota|Yaris (no GR)",
-
-  // --- Volkswagen ---
-  "Volkswagen|Amarok G1",
-  "Volkswagen|Amarok G2",
-  "Volkswagen|Gol - Saveiro - Senda G1",
-  "Volkswagen|Gol - Saveiro - Country G2",
-  "Volkswagen|Gol - Saveiro - Country G3 - G4",
-  "Volkswagen|Gol, Saveiro G2-G3-G4 Racing (Viturro)",
-  "Volkswagen|Gol - Saveiro - Voyage G5",
-  "Volkswagen|Gol - Saveiro - Voyage G6-G7-G8",
-  "Volkswagen|Golf MK3",
-  "Volkswagen|Nivus",
-  "Volkswagen|Saveiro 2024 - Xtreme",
-  "Volkswagen|Santana",
-  "Volkswagen|Pointer",
-  "Volkswagen|Polo G1 (1995-2008)",
-  "Volkswagen|Polo Novo",
-  "Volkswagen|Scirocco",
-  "Volkswagen|Suran - Fox (G1, G2, G3)",
-  "Volkswagen|Taos",
-  "Volkswagen|Tera",
-  "Volkswagen|T-Cross",
-  "Volkswagen|Tiguan",
-  "Volkswagen|Up",
-  "Volkswagen|Vento MK6",
-  "Volkswagen|Virtus",
-];
 
 function isCompatible(marca, modelo, anio){
   const keyModelo = `${marca}|${modelo}`;
@@ -1219,10 +1263,16 @@ function renderResultado(marca, modelo, anio){
         <h3 class="status-title">¡Compatible!</h3>
         <p class="status-sub">${marca} ${modelo} ${anio}</p>
 
-        <button class="buy-btn" id="buyBtn">
-          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.9-1.3C8.4 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.5 13.5 3.5 12c0-4.7 3.8-8.5 8.5-8.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>
-          COMPRAR
-        </button>
+        <div class="buy-actions">
+          <button class="buy-btn" id="buyBtn">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.3-.5-2.4-1.5-.9-.8-1.5-1.8-1.6-2.1-.2-.3 0-.5.1-.6.1-.1.3-.3.4-.5.1-.1.2-.3.3-.5.1-.2 0-.4 0-.5-.1-.1-.7-1.6-.9-2.2-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.4s1 2.8 1.2 3c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.3.2-.7.2-1.2.2-1.3-.1-.1-.3-.2-.6-.3z"/><path d="M12 2C6.5 2 2 6.5 2 12c0 1.9.5 3.7 1.5 5.3L2 22l4.9-1.3C8.4 21.6 10.2 22 12 22c5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.6 0-3.2-.4-4.5-1.2l-.3-.2-3 .8.8-2.9-.2-.3C4 15 3.5 13.5 3.5 12c0-4.7 3.8-8.5 8.5-8.5s8.5 3.8 8.5 8.5-3.8 8.5-8.5 8.5z"/></svg>
+            COMPRAR
+          </button>
+          <a class="ml-btn" href="${MERCADOLIBRE_STORE_URL}" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm5.4 7.6l-1.9 6c-.1.3-.4.5-.7.4l-2.3-.7-1.1 1.5c-.2.3-.6.3-.8 0l-1-1.4-2.3.7c-.3.1-.6-.1-.7-.4l-1.9-6c-.1-.3.1-.6.4-.7l1.9-.6 1.1 1.4c.2.3.6.3.8 0l1-1.4 1 1.4c.2.3.6.3.8 0l1.1-1.4 1.9.6c.3.1.5.4.4.7z"/></svg>
+            Comprar en Mercado Libre
+          </a>
+        </div>
       </div>
 
       <div class="kit-box">
