@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,800;1,700;1,800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee+Tint&family=Carter+One&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee&family=Bungee+Tint&family=Carter+One&display=swap" rel="stylesheet">
 <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&display=swap" rel="stylesheet">
 <style>
   :root{
@@ -26,6 +26,8 @@
     --green-dim:#0e2b1c;
     --red:#ff5a5a;
     --purple:#a855f7;
+    --gold:#f0b429;
+    --gold-soft:rgba(240,180,41,.14);
     --text-0:#f6f8fb;
     --text-1:#a7afbd;
     --text-2:#616b7c;
@@ -133,15 +135,33 @@
     font-weight: 400;
     font-style: normal;
   }
+  @keyframes heroTitleIn{
+    from{ opacity:0; transform:translateY(16px); }
+    to{ opacity:1; transform:translateY(0); }
+  }
   .page-hero h1{
-    font-family:'Chakra Petch', var(--font-display), sans-serif;
-    font-weight:700;
+    font-family:'Bungee', var(--font-display), sans-serif;
+    font-weight:400;
     font-style:normal;
-    font-size:clamp(2.6rem, 8vw, 5rem);
-    line-height:.95;
+    font-size:clamp(1.8rem, 5vw, 3rem);
     letter-spacing:-.01em;
+    line-height:1.25;
     margin:0 0 1rem;
     text-transform:uppercase;
+    background:linear-gradient(90deg, #a855f7, #5b8dff, #ffffff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    -webkit-text-fill-color:transparent;
+    color:transparent;
+    display:inline-block;
+    cursor:default;
+    animation:heroTitleIn 0.7s cubic-bezier(.22,1,.36,1) both;
+    transition:filter 0.35s ease, transform 0.35s ease;
+    filter:drop-shadow(0 0 0 rgba(0,0,0,0));
+  }
+  .page-hero h1:hover{
+    transform:translateY(-2px) scale(1.015);
+    filter:drop-shadow(0 8px 24px rgba(91,141,255,0.45));
   }
   .page-hero__rule{
     width:140px; height:5px; border-radius:3px;
@@ -179,9 +199,10 @@
   .panel__head{ display:flex; align-items:flex-start; gap:.9rem; margin-bottom:1.4rem; }
   .panel__icon{
     width:44px; height:44px; flex-shrink:0; border-radius:12px;
-    background:rgba(47,107,255,.14); color:var(--blue-bright);
+    background:var(--gold-soft); color:var(--gold);
     display:flex; align-items:center; justify-content:center;
   }
+  .panel__head h2 .accent-gold{ color:var(--gold); }
   .panel__icon svg{ width:22px; height:22px; }
   .panel__head h2{ font-family:'Chakra Petch', var(--font-display), sans-serif; font-weight:700; font-size:1.15rem; letter-spacing:.02em; margin:0 0 .2rem; text-transform:uppercase; }
   .panel__head p{ margin:0; color:var(--text-1); font-size:.9rem; }
@@ -212,16 +233,16 @@
     width:100%;
     display:flex; align-items:center; justify-content:center; gap:.6rem;
     padding:1rem 1.2rem;
-    border:none; border-radius:12px; cursor:pointer;
+    border:1.5px solid var(--gold); border-radius:12px; cursor:pointer;
     font-family:'JetBrains Mono', monospace; font-weight:700; font-size:.88rem;
     letter-spacing:.06em; text-transform:uppercase;
-    color:#fff;
-    background:linear-gradient(90deg, var(--blue), var(--purple));
-    box-shadow:0 14px 30px -14px rgba(80,60,255,.65);
-    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s;
+    color:var(--gold);
+    background:rgba(240,180,41,.06);
+    box-shadow:0 14px 30px -18px rgba(240,180,41,.5);
+    transition:transform .25s cubic-bezier(.16,1,.3,1), box-shadow .25s, background .25s;
     margin-top:.3rem;
   }
-  .btn-submit:hover{ transform:translateY(-2px); box-shadow:0 18px 36px -14px rgba(80,60,255,.8); }
+  .btn-submit:hover{ transform:translateY(-2px); background:rgba(240,180,41,.14); box-shadow:0 18px 36px -16px rgba(240,180,41,.65); }
   .btn-submit svg{ width:18px; height:18px; }
   .form-note{ font-size:.78rem; color:var(--text-2); text-align:center; margin-top:.7rem; }
   .form-status{ font-size:.85rem; text-align:center; margin-top:.7rem; min-height:1.2em; }
@@ -382,7 +403,7 @@
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
         </div>
         <div>
-          <h2>Envianos un mensaje</h2>
+          <h2>Envianos un <span class="accent-gold">mensaje</span></h2>
           <p>Completá el formulario y te responderemos.</p>
         </div>
       </div>
