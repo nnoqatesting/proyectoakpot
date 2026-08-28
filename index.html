@@ -397,6 +397,28 @@ p{ margin:0; color:var(--ink-dim); }
 .hero__list li svg{ width:14px; height:14px; color:var(--blue-2); flex-shrink:0; }
 .hero__ctas{ display:flex; flex-wrap:wrap; gap:1rem; margin-top:2.2rem; }
 
+/* Luces del taller parpadeando de fondo (capa detrás del texto) */
+.hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+  pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 40% at 82% 10%, rgba(255,255,255,.16), transparent 62%),
+    radial-gradient(ellipse 32% 45% at 16% 28%, rgba(255,196,120,.10), transparent 65%);
+  mix-blend-mode:screen;
+  animation: heroLightsFlicker 6.5s infinite;
+}
+@keyframes heroLightsFlicker{
+  0%, 18%, 22%, 25%, 53%, 57%, 100%{ opacity:1; }
+  20%, 24%, 55%{ opacity:.4; }
+  40%{ opacity:.8; }
+}
+@media (prefers-reduced-motion: reduce){
+  .hero::before, .tag::before{ animation:none; }
+}
+
 /* schematic panel — reemplaza la escena de auto/3D */
 .schema{
   position:relative;
@@ -468,26 +490,59 @@ p{ margin:0; color:var(--ink-dim); }
 .hud-card h3{ margin:.9rem 0 .6rem; font-size:1.1rem; }
 .hud-card p{ font-size:.9rem; }
 
-/* ---------- como funciona: flujo conectado ---------- */
-.flow{ display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
-.flow::before{
-  content:''; position:absolute; top:22px; left:6%; right:6%; height:1px;
-  background: repeating-linear-gradient(90deg, var(--line-strong) 0 8px, transparent 8px 14px);
+/* ---------- como funciona: diagrama del amortiguador ---------- */
+.how__grid{ display:grid; grid-template-columns:1fr 1fr; gap:clamp(2rem,5vw,4rem); align-items:center; margin-bottom:clamp(3rem,7vw,5rem); }
+.how__desc{ margin-top:1.1rem; max-width:30rem; font-size:1rem; }
+.how__badges{ display:flex; flex-direction:column; gap:1.1rem; margin-top:2rem; max-width:26rem; }
+.how__badge{ display:flex; align-items:flex-start; gap:.9rem; }
+.how__badge-icon{
+  flex-shrink:0; width:38px; height:38px; border-radius:50%;
+  border:1px solid var(--line-strong); background:var(--bg-1);
+  display:flex; align-items:center; justify-content:center; color:var(--blue-2);
 }
-.flow-step{ position:relative; padding:0 1rem; opacity:0; transform:translateY(20px); transition: transform .7s var(--ease-damper), opacity .7s var(--ease-damper); }
+.how__badge-icon svg{ width:17px; height:17px; }
+.how__badge-text h4{ font-family:var(--f-display); font-size:.98rem; font-weight:700; margin:0 0 .25rem; }
+.how__badge-text p{ font-size:.84rem; margin:0; }
+
+.how__diagram-wrap{ display:flex; align-items:stretch; gap:clamp(1rem,3vw,2.2rem); }
+.how__diagram{ flex:0 0 auto; width:min(300px,40vw); }
+.how__diagram img{ width:100%; height:auto; display:block; }
+.how__labels{ position:relative; flex:1; min-width:0; }
+.how__label{ position:absolute; left:0; right:0; transform:translateY(-50%); border-left:2px solid var(--line-strong); padding-left:1rem; }
+.how__label h4{ font-family:var(--f-mono); font-size:.78rem; letter-spacing:.06em; text-transform:uppercase; color:var(--blue-2); margin:0 0 .35rem; }
+.how__label p{ font-size:.85rem; margin:0; max-width:16rem; }
+
+.section-divider{ display:flex; align-items:center; gap:1.4rem; margin-bottom:clamp(2.2rem,5vw,3.4rem); }
+.section-divider::before, .section-divider::after{ content:''; flex:1; height:1px; background:var(--line-strong); }
+.section-divider span{ font-family:var(--f-mono); font-size:.78rem; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-dim); white-space:nowrap; }
+
+/* ---------- como funciona: pasos con ilustración ---------- */
+.flow{ display:grid; grid-template-columns:repeat(4,1fr); gap:1.1rem; position:relative; }
+.flow-step{
+  position:relative; padding:1.7rem 1.5rem;
+  border:1px solid var(--line); border-radius:var(--radius-s); background:var(--bg-1);
+  opacity:0; transform:translateY(20px);
+  transition: transform .7s var(--ease-damper), opacity .7s var(--ease-damper), border-color var(--dur-m);
+}
 .flow-step.reveal{ opacity:1; transform:translateY(0); }
-.flow-step__node{
-  width:44px; height:44px; border-radius:50%;
-  background:var(--bg-1); border:1px solid var(--line-strong);
-  display:flex; align-items:center; justify-content:center;
-  font-family:var(--f-mono); font-weight:700; font-size:.85rem; color:var(--blue-2);
-  margin-bottom:1.3rem;
-  position:relative; z-index:2;
+.flow-step:hover{ border-color:var(--line-strong); transform:translateY(-4px); }
+.flow-step:not(:last-child)::after{
+  content:'›'; position:absolute; top:2rem; right:-.95rem;
+  font-family:var(--f-mono); font-size:1.1rem; color:var(--ink-faint);
+  z-index:2; line-height:1;
 }
-.flow-step__node::after{ content:''; position:absolute; inset:-5px; border-radius:50%; border:1px solid var(--blue-2); opacity:0; transition:opacity var(--dur-m); }
-.flow-step:hover .flow-step__node::after{ opacity:.5; }
+.flow-step__num{ display:block; font-family:var(--f-mono); font-weight:700; font-size:1.6rem; color:var(--blue-2); margin-bottom:.9rem; }
 .flow-step h3{ font-size:1.05rem; margin-bottom:.5rem; }
-.flow-step p{ font-size:.88rem; }
+.flow-step p{ font-size:.88rem; margin-bottom:1.4rem; }
+.step-art{ width:100%; height:auto; display:block; border-radius:10px; }
+
+@media (max-width:860px){
+  .how__grid{ grid-template-columns:1fr; }
+  .how__diagram-wrap{ flex-direction:column; }
+  .how__diagram{ width:min(280px,70vw); margin:0 auto; }
+  .how__labels{ display:flex; flex-direction:column; gap:1.4rem; padding:1.6rem 0 0; }
+  .how__label{ position:static; transform:none; }
+}
 
 /* ---------- brands marquee: chips tipográficos ---------- */
 .brands__wrap{ overflow:hidden; mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); -webkit-mask-image: linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent); }
@@ -681,7 +736,7 @@ p{ margin:0; color:var(--ink-dim); }
   .schema{ max-width:480px; margin-inline:auto; }
   .benefits__grid{ grid-template-columns:1fr 1fr; }
   .flow{ grid-template-columns:1fr 1fr; row-gap:2rem; }
-  .flow::before{ display:none; }
+  .flow-step:not(:last-child)::after{ display:none; }
   .products__grid{ grid-template-columns:1fr 1fr; }
   .install__wrap{ grid-template-columns:1fr; }
   .footer__top{ grid-template-columns:1fr 1fr; }
@@ -824,15 +879,111 @@ p{ margin:0; color:var(--ink-dim); }
   <!-- COMO FUNCIONA -->
   <section id="como-funciona" class="alt">
     <div class="wrap">
-      <div class="section-head reveal-up">
-        <span class="tag">El sistema</span>
-        <h2>Cómo funciona el amortiguador</h2>
+
+      <div class="how__grid">
+        <div class="how__intro reveal-up">
+          <span class="tag">El sistema</span>
+          <h2>Cómo funciona el amortiguador</h2>
+          <p class="how__desc">Nuestro amortiguador a gas controla el movimiento del capot, brindando apertura suave, soporte estable y cierre controlado para mayor seguridad y confort.</p>
+
+          <div class="how__badges">
+            <div class="how__badge">
+              <div class="how__badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 12a8 8 0 1 1-2.34-5.66"/><path d="M20 4v5h-5"/></svg>
+              </div>
+              <div class="how__badge-text">
+                <h4>Giro 360°</h4>
+                <p>Instalación flexible sin importar la orientación.</p>
+              </div>
+            </div>
+            <div class="how__badge">
+              <div class="how__badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l7 3.2v5.4c0 4.4-3 8.2-7 9.4-4-1.2-7-5-7-9.4V6.2L12 3z"/></svg>
+              </div>
+              <div class="how__badge-text">
+                <h4>Alta calidad</h4>
+                <p>Materiales premium que garantizan durabilidad.</p>
+              </div>
+            </div>
+            <div class="how__badge">
+              <div class="how__badge-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4"><path d="M5 12l4 4L19 6"/></svg>
+              </div>
+              <div class="how__badge-text">
+                <h4>Rendimiento</h4>
+                <p>Funcionamiento suave, constante y confiable.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="how__diagram-wrap reveal-scale">
+          <div class="how__diagram">
+            <picture>
+              <source srcset="img/amortiguador-diagrama.webp" type="image/webp">
+              <img src="img/amortiguador-diagrama.png" alt="Diagrama del amortiguador a gas AK-POT con giro de 360°" loading="lazy">
+            </picture>
+          </div>
+          <div class="how__labels">
+            <div class="how__label" style="top:10.8%">
+              <h4>Cabezal (Ball Joint)</h4>
+              <p>Permite una conexión segura y con giro completo.</p>
+            </div>
+            <div class="how__label" style="top:32.3%">
+              <h4>Vástago</h4>
+              <p>Se desplaza hacia arriba y hacia abajo.</p>
+            </div>
+            <div class="how__label" style="top:50.6%">
+              <h4>Cuerpo</h4>
+              <p>Contiene el gas presurizado que genera la fuerza de soporte.</p>
+            </div>
+            <div class="how__label" style="top:78.3%">
+              <h4>Base (Ball Joint)</h4>
+              <p>Permite una conexión segura y con giro completo.</p>
+            </div>
+          </div>
+        </div>
       </div>
+
+      <div class="section-divider"><span>El proceso en 4 pasos</span></div>
+
       <div class="flow">
-        <div class="flow-step"><div class="flow-step__node">01</div><h3>Anclaje de fábrica</h3><p>Los soportes se fijan en los puntos originales del capot y la carrocería.</p></div>
-        <div class="flow-step"><div class="flow-step__node">02</div><h3>Pistón a gas</h3><p>Un cilindro presurizado genera resistencia progresiva durante todo el recorrido.</p></div>
-        <div class="flow-step"><div class="flow-step__node">03</div><h3>Apertura controlada</h3><p>El capot sube de forma suave, sin golpes ni movimientos bruscos.</p></div>
-        <div class="flow-step"><div class="flow-step__node">04</div><h3>Sostén automático</h3><p>Queda sostenido en el aire en cualquier ángulo, sin varillas ni trabas manuales.</p></div>
+        <div class="flow-step">
+          <span class="flow-step__num">01</span>
+          <h3>Compresión</h3>
+          <p>Al cerrar el capot, el vástago se comprime dentro del cuerpo del amortiguador.</p>
+          <picture>
+            <source srcset="img/paso-compresion.webp" type="image/webp">
+            <img class="step-art" src="img/paso-compresion.png" alt="Compresión del amortiguador" loading="lazy">
+          </picture>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step__num">02</span>
+          <h3>Movimiento del gas</h3>
+          <p>El gas presurizado en el interior se comprime, almacenando energía.</p>
+          <picture>
+            <source srcset="img/paso-movimiento-gas.webp" type="image/webp">
+            <img class="step-art" src="img/paso-movimiento-gas.png" alt="Movimiento del gas dentro del amortiguador" loading="lazy">
+          </picture>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step__num">03</span>
+          <h3>Extensión</h3>
+          <p>Al abrir el capot, el gas se expande y empuja el vástago hacia afuera.</p>
+          <picture>
+            <source srcset="img/paso-extension.webp" type="image/webp">
+            <img class="step-art" src="img/paso-extension.png" alt="Extensión del amortiguador" loading="lazy">
+          </picture>
+        </div>
+        <div class="flow-step">
+          <span class="flow-step__num">04</span>
+          <h3>Soporte y control</h3>
+          <p>El amortiguador mantiene el capot abierto de forma estable y permite un cierre controlado y seguro.</p>
+          <picture>
+            <source srcset="img/paso-soporte-control.webp" type="image/webp">
+            <img class="step-art" src="img/paso-soporte-control.png" alt="Soporte y control del capot" loading="lazy">
+          </picture>
+        </div>
       </div>
     </div>
   </section>
