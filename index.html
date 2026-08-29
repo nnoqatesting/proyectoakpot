@@ -701,14 +701,17 @@ p{ margin:0; color:var(--ink-dim); }
 .wa-fab__option .dot{ width:8px; height:8px; border-radius:50%; }
 .wa-fab__option.red .dot{ background:var(--red); }
 .wa-fab__option.blue .dot{ background:var(--blue-2); }
-.wa-fab__toggle{ width:60px; height:60px; border-radius:50%; background: linear-gradient(145deg, var(--bg-2), var(--bg)); border:1px solid var(--blue-2); box-shadow:0 0 0 0 rgba(61,61,255,.5), var(--shadow); display:flex; align-items:center; justify-content:center; position:relative; transition: transform var(--dur-s) var(--ease-damper); animation: waPulse 3s infinite; overflow:hidden; padding:0; }
-.wa-fab__toggle::before{ content:''; position:absolute; inset:-3px; border-radius:50%; background: linear-gradient(90deg, #1f6fff, #ff2130, #ffffff, #1f6fff); background-size:220% 100%; animation: waRgb 1.2s linear infinite; z-index:0; opacity:.95; filter:blur(2px); }
+.wa-fab__toggle{ width:60px; height:60px; border-radius:50%; background: linear-gradient(145deg, var(--bg-2), var(--bg)); border:1px solid #25d366; box-shadow:0 0 10px 2px rgba(37,211,102,.55), 0 0 22px 6px rgba(37,211,102,.3), var(--shadow); display:flex; align-items:center; justify-content:center; position:relative; transition: transform var(--dur-s) var(--ease-damper); animation: waNeonPulse 2.4s ease-in-out infinite; overflow:hidden; padding:0; }
+.wa-fab__toggle::before{ content:''; position:absolute; inset:-3px; border-radius:50%; background: linear-gradient(90deg, #25d366, #128c7e, #6dffb0, #25d366); background-size:220% 100%; animation: waRgb 1.6s linear infinite; z-index:0; opacity:.95; filter:blur(2px); }
 .wa-fab__toggle:hover{ transform:scale(1.06); }
 .wa-fab__toggle img{ width:100%; height:100%; object-fit:cover; display:block; position:relative; z-index:2; border-radius:50%; }
 .wa-fab__toggle svg{ width:24px; height:24px; color:var(--ink); transition: transform var(--dur-m) var(--ease-damper); }
 .wa-fab.open .wa-fab__toggle svg{ transform:rotate(135deg); }
 @keyframes waRgb{ 0%{ background-position:0% 50%; } 100%{ background-position:200% 50%; } }
-@keyframes waPulse{ 0%,100%{ box-shadow:0 0 0 0 rgba(61,61,255,.3), var(--shadow); } 50%{ box-shadow:0 0 0 9px rgba(61,61,255,0), var(--shadow); } }
+@keyframes waNeonPulse{
+  0%,100%{ box-shadow:0 0 8px 2px rgba(37,211,102,.5), 0 0 18px 5px rgba(37,211,102,.28), var(--shadow); }
+  50%{ box-shadow:0 0 16px 5px rgba(37,211,102,.9), 0 0 34px 12px rgba(37,211,102,.55), var(--shadow); }
+}
 
 /* ---------- loader ---------- */
 .loader{ position:fixed; inset:0; background:var(--bg); z-index:999; display:flex; align-items:center; justify-content:center; transition: opacity .6s var(--ease-damper), visibility .6s; }
@@ -769,16 +772,15 @@ p{ margin:0; color:var(--ink-dim); }
 
 <header class="header">
   <a href="#top" class="header__logo">
-    <img src="img/akpot.logo.jpg" alt="AK-POT">
+    <img src="img/akpot.logo.png" alt="AK-POT">
   </a>
   <nav class="header__nav">
     <a href="#top">Inicio</a>
     <a href="compatibilidad.html">Compatibilidad</a>
     <a href="contacto.html">Contacto</a>
-    <a href="#productos">Nuestros productos</a>
+    <a href="#productos">Productos destacados</a>
   </nav>
   <div class="header__actions">
-    <a href="seccion.html" class="btn-nico"><span class="dot"></span>Nico#N3F</a>
     <button class="header__burger" aria-label="Abrir menú" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
@@ -789,41 +791,7 @@ p{ margin:0; color:var(--ink-dim); }
   <a href="#top">Inicio</a>
   <a href="compatibilidad.html">Compatibilidad</a>
   <a href="contacto.html">Contacto</a>
-  <a href="#productos">Nuestros productos</a>
-  <a href="#beneficios">Beneficios</a>
-  <a href="#como-funciona">Cómo funciona</a>
-  <a href="#productos">Productos</a>
-  <a href="#tienda">Tienda oficial</a>
-  <a href="#instalacion">Instalación</a>
-  <a href="#faq">Preguntas</a>
-  <div class="mobile-menu__theme">
-    Tema
-    <button class="theme-switch" id="themeSwitch" aria-label="Cambiar tema" aria-pressed="false">
-      <!-- Estrellas para modo oscuro -->
-      <span class="theme-switch__stars">
-        <span class="theme-switch__star"></span>
-        <span class="theme-switch__star"></span>
-        <span class="theme-switch__star"></span>
-      </span>
-      <!-- Nubes para modo claro -->
-      <span class="theme-switch__clouds">
-        <span class="theme-switch__cloud"></span>
-        <span class="theme-switch__cloud"></span>
-      </span>
-      <!-- Perilla con sol y luna -->
-      <span class="theme-switch__knob">
-        <!-- Luna (visible en modo oscuro) -->
-        <svg class="icon-moon" viewBox="0 0 24 24" fill="currentColor">
-          <path d="M21.64 13a1 1 0 00-1.05-.14 8.05 8.05 0 01-3.37.73 8.15 8.15 0 01-8.14-8.1 8.59 8.59 0 01.25-2A1 1 0 008.43 2.5a10 10 0 1013.21 10.66z"/>
-        </svg>
-        <!-- Sol (visible en modo claro) -->
-        <svg class="icon-sun" viewBox="0 0 24 24" fill="currentColor">
-          <circle cx="12" cy="12" r="5"/>
-          <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
-        </svg>
-      </span>
-    </button>
-  </div>
+  <a href="#productos">Productos destacados</a>
 </div>
 
 <main id="top">
@@ -1030,31 +998,31 @@ p{ margin:0; color:var(--ink-dim); }
       </div>
       <div class="products__grid">
         <article class="ticket">
-          <div class="ticket__media"><img src="img/standard.png" alt="Kit AK-POT Standard" loading="lazy"></div>
+          <div class="ticket__media"><img src="img/standard.png" alt="Kit AK-POT para Volkswagen Gol, Saveiro y Senda" loading="lazy"></div>
           <div class="ticket__body">
             <span class="ticket__tag">Línea Standard</span>
-            <h3>Kit AK-POT Standard</h3>
-            <p>Para autos y sedanes. Instalación directa sobre soportes de fábrica.</p>
+            <h3>Kit AK-POT Volkswagen</h3>
+            <p>Diseñado para Volkswagen Gol - Saveiro y camionetas, mayor resistencia y recorrido.</p>
             <div class="ticket__specs"><span>2 pistones</span><span>Sin taller</span><span>Garantía</span></div>
             <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
           </div>
         </article>
         <article class="ticket">
-          <div class="ticket__media"><img src="img/proimg.png" alt="Kit AK-POT Pro" loading="lazy"></div>
+          <div class="ticket__media"><img src="img/proimg.png" alt="Kit AK-POT para Volkswagen Golf Mk3" loading="lazy"></div>
           <div class="ticket__body">
             <span class="ticket__tag">Línea Pro</span>
-            <h3>Kit AK-POT Pro</h3>
-            <p>Pistones reforzados para capots de mayor peso y superficies extendidas.</p>
+            <h3>Kit AK-POT Volkswagen Golf</h3>
+            <p>Diseñado para Volkswagen Golf Mk3, mayor resistencia y recorrido suave.</p>
             <div class="ticket__specs"><span>Reforzado</span><span>Sin taller</span><span>Garantía</span></div>
             <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
           </div>
         </article>
         <article class="ticket">
-          <div class="ticket__media"><img src="img/pro4x4.png" alt="Kit AK-POT 4x4" loading="lazy"></div>
+          <div class="ticket__media"><img src="img/pro4x4.png" alt="Kit AK-POT para Chevrolet Celta" loading="lazy"></div>
           <div class="ticket__body">
             <span class="ticket__tag">Línea 4x4</span>
-            <h3>Kit AK-POT 4x4</h3>
-            <p>Diseñado para pick-ups y camionetas, mayor resistencia y recorrido.</p>
+            <h3>Kit AK-POT Chevrolet celta </h3>
+            <p>Diseñado para Chevrolet Celta, mayor resistencia y suavidad al abrir el capot.</p>
             <div class="ticket__specs"><span>Mayor recorrido</span><span>Sin taller</span><span>Garantía</span></div>
             <a href="https://www.mercadolibre.com.ar/tienda/ak-pot" target="_blank" rel="noopener" class="btn btn-outline">Ver en Mercado Libre</a>
           </div>
@@ -1120,7 +1088,7 @@ p{ margin:0; color:var(--ink-dim); }
   <div class="wrap">
     <div class="footer__top">
       <div class="footer__brand">
-        <img src="img/akpot.logo.jpg" alt="AK-POT">
+        <img src="img/akpot.logo.png" alt="AK-POT">
         <p>Amortiguadores para capot. Tecnología, calidad y confianza en cada instalación.</p>
       </div>
       <div class="footer__col">
@@ -1174,15 +1142,6 @@ document.addEventListener('DOMContentLoaded', () => {
   /* loader */
   const loader = document.querySelector('.loader');
   window.addEventListener('load', () => setTimeout(() => loader && loader.classList.add('done'), 450));
-
-  /* theme toggle */
-  const root = document.documentElement;
-  const themeSwitch = document.getElementById('themeSwitch');
-  themeSwitch.addEventListener('click', () => {
-    const next = root.getAttribute('data-theme') === 'dark' ? 'light' : 'dark';
-    root.setAttribute('data-theme', next);
-    themeSwitch.setAttribute('aria-pressed', String(next === 'light'));
-  });
 
   /* header scroll state */
   const header = document.querySelector('.header');
