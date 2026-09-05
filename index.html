@@ -722,7 +722,7 @@ p{ margin:0; color:var(--ink-dim); }
 .footer__social svg{ width:15px; height:15px; }
 
 /* ---------- WhatsApp FAB ---------- */
-.wa-fab{ position:fixed; right:clamp(1.1rem,3vw,2.2rem); bottom:clamp(1.1rem,3vw,2.2rem); z-index:120; display:inline-flex; flex-direction:column; align-items:flex-end; gap:.8rem; width:fit-content; height:fit-content; pointer-events:none; }
+.wa-fab{ position:fixed; right:clamp(1.1rem,3vw,2.2rem); bottom:clamp(1.1rem,3vw,2.2rem); z-index:120; display:inline-flex; flex-direction:column; align-items:flex-end; gap:.8rem; width:fit-content; height:fit-content; pointer-events:none; transition: opacity .45s cubic-bezier(.34,1.56,.64,1), transform .45s cubic-bezier(.34,1.56,.64,1); }
 
 .wa-fab > *{ pointer-events:auto; }
 .wa-fab__menu{ display:flex; flex-direction:column; gap:.65rem; opacity:0; transform:translateY(12px) scale(.96); pointer-events:none; transition: opacity var(--dur-m) var(--ease-damper), transform var(--dur-m) var(--ease-damper); }
@@ -740,8 +740,19 @@ p{ margin:0; color:var(--ink-dim); }
 .wa-fab.open .wa-fab__toggle svg{ transform:rotate(135deg); }
 @keyframes waRgb{ 0%{ background-position:0% 50%; } 100%{ background-position:200% 50%; } }
 
+/* Ocultar FABs al scrollear hacia abajo (solo mobile/responsive) */
+@media (max-width:900px){
+  .wa-fab.fab-hidden,
+  .social-fab.fab-hidden{
+    opacity:0;
+    transform:translateY(50px) scale(.8);
+    pointer-events:none;
+    transition: opacity .28s ease, transform .28s ease;
+  }
+}
+
 /* ---------- Social FAB (Instagram + TikTok) ---------- */
-.social-fab{ position:fixed; left:clamp(1.1rem,3vw,2.2rem); bottom:clamp(1.1rem,3vw,2.2rem); z-index:120; display:flex; gap:.8rem; }
+.social-fab{ position:fixed; left:clamp(1.1rem,3vw,2.2rem); bottom:clamp(1.1rem,3vw,2.2rem); z-index:120; display:flex; gap:.8rem; transition: opacity .45s cubic-bezier(.34,1.56,.64,1), transform .45s cubic-bezier(.34,1.56,.64,1); }
 .social-fab__btn{ width:56px; height:56px; border-radius:18px; display:flex; align-items:center; justify-content:center; background:linear-gradient(145deg, var(--bg-2), var(--bg)); position:relative; overflow:hidden; transition: transform var(--dur-s) var(--ease-damper); }
 .social-fab__btn:hover{ transform:translateY(-3px) scale(1.05); }
 .social-fab__btn svg{ width:24px; height:24px; color:#fff; position:relative; z-index:2; }
@@ -1186,7 +1197,30 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* header scroll state */
   const header = document.querySelector('.header');
-  const onScroll = () => header.classList.toggle('scrolled', window.scrollY > 60);
+  const waFab = document.querySelector('.wa-fab');
+  const socialFab = document.querySelector('.social-fab');
+  let lastScrollY = window.scrollY;
+  const isMobileView = () => window.matchMedia('(max-width:900px)').matches;
+  const onScroll = () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+
+    if(isMobileView()){
+      const goingDown = window.scrollY > lastScrollY;
+      const hide = goingDown && window.scrollY > 80;
+      const show = window.scrollY <= 80;
+      if(hide){
+        waFab && waFab.classList.add('fab-hidden');
+        socialFab && socialFab.classList.add('fab-hidden');
+      } else if(show || !goingDown){
+        waFab && waFab.classList.remove('fab-hidden');
+        socialFab && socialFab.classList.remove('fab-hidden');
+      }
+    } else {
+      waFab && waFab.classList.remove('fab-hidden');
+      socialFab && socialFab.classList.remove('fab-hidden');
+    }
+    lastScrollY = window.scrollY;
+  };
   document.addEventListener('scroll', onScroll, { passive:true });
   onScroll();
 
@@ -1221,7 +1255,6 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   /* whatsapp fab */
-  const waFab = document.querySelector('.wa-fab');
   const waToggle = document.querySelector('.wa-fab__toggle');
   waToggle.addEventListener('click', () => waFab.classList.toggle('open'));
   document.addEventListener('click', (e) => { if (!waFab.contains(e.target)) waFab.classList.remove('open'); });
