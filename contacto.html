@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="referrer" content="strict-origin-when-cross-origin">
 <title>AK-POT — Contacto</title>
 <link rel="icon" type="image/png" href="img/car.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -249,6 +250,15 @@
   .form-status.ok{ color:var(--green); }
   .form-status.err{ color:var(--red); }
 
+  /* validación / seguridad de campos */
+  .field.field--error{ border-color:var(--red); box-shadow:0 0 0 1px var(--red); }
+  .field-hint{ display:flex; justify-content:space-between; font-size:.72rem; color:var(--text-2); margin:-.75rem 0 .9rem; padding:0 .2rem; }
+  .field-hint.is-limit{ color:var(--red); }
+  .field-error-msg{ font-size:.75rem; color:var(--red); margin:-.85rem 0 .9rem; padding:0 .2rem; min-height:1em; }
+  /* honeypot anti-bots: oculto para personas, visible para bots automatizados */
+  .hp-field{ position:absolute !important; left:-9999px !important; top:-9999px !important; width:1px !important; height:1px !important; overflow:hidden !important; opacity:0 !important; pointer-events:none; }
+  .btn-submit:disabled{ opacity:.55; cursor:not-allowed; transform:none !important; }
+
   /* otros medios */
   .contact-methods h2{
     font-family:'Chakra Petch', var(--font-display), sans-serif; font-weight:700; font-size:1.15rem;
@@ -407,31 +417,52 @@
         </div>
       </div>
 
-      <form id="contactForm">
+      <form id="contactForm" novalidate>
         <div class="field-row">
-          <label class="field">
+          <label class="field" id="fieldNombre">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-            <input type="text" name="nombre" placeholder="Nombre completo" required>
+            <input type="text" name="nombre" placeholder="Nombre y apellido" required
+                   maxlength="50" minlength="2"
+                   pattern="[A-Za-zÁÉÍÓÚÑÜáéíóúñü\s'\-]+"
+                   title="Solo letras y espacios, sin números (máx. 50 caracteres)"
+                   autocomplete="name" spellcheck="false">
           </label>
-          <label class="field">
+          <label class="field" id="fieldEmail">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 6l-10 7L2 6"/></svg>
-            <input type="email" name="email" placeholder="Email" required>
+            <input type="email" name="email" placeholder="Email" required
+                   maxlength="50"
+                   autocomplete="email" spellcheck="false">
           </label>
         </div>
-        <label class="field">
+        <div class="field-hint" id="hintNombre"><span id="errNombre" class="field-error-msg" style="margin:0;"></span><span id="countNombre">0/50</span></div>
+
+        <label class="field" id="fieldAsunto">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>
-          <input type="text" name="asunto" placeholder="Asunto" required>
+          <input type="text" name="asunto" placeholder="Asunto" required
+                 maxlength="50" minlength="2"
+                 pattern="[A-Za-zÁÉÍÓÚÑÜáéíóúñü\s'\-]+"
+                 title="Solo letras y espacios, sin números (máx. 50 caracteres)"
+                 autocomplete="off" spellcheck="false">
         </label>
-        <label class="field" style="align-items:flex-start;">
+        <div class="field-hint" id="hintAsunto"><span id="errAsunto" class="field-error-msg" style="margin:0;"></span><span id="countAsunto">0/50</span></div>
+
+        <label class="field" style="align-items:flex-start;" id="fieldMensaje">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="margin-top:.15rem;"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
-          <textarea name="mensaje" placeholder="Mensaje" required></textarea>
+          <textarea name="mensaje" placeholder="Mensaje" required maxlength="400" minlength="5" autocomplete="off" spellcheck="false"></textarea>
+        </label>
+        <div class="field-hint" id="hintMensaje"><span id="errMensaje" class="field-error-msg" style="margin:0;"></span><span id="countMensaje">0/400</span></div>
+
+        <!-- Campo trampa anti-bots (honeypot): debe quedar SIEMPRE vacío. No completar. -->
+        <label class="hp-field" aria-hidden="true">
+          Dejar en blanco
+          <input type="text" name="sitioweb" id="hpField" tabindex="-1" autocomplete="off">
         </label>
 
-        <button type="submit" class="btn-submit">
+        <button type="submit" class="btn-submit" id="btnSubmit">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4z"/></svg>
           Enviar mensaje
         </button>
-        <p class="form-status" id="formStatus"></p>
+        <p class="form-status" id="formStatus" role="alert" aria-live="polite"></p>
         <p class="form-note">Al enviar, se abrirá tu app de WhatsApp con el mensaje ya redactado.</p>
       </form>
     </div>
@@ -593,29 +624,283 @@ document.addEventListener('DOMContentLoaded', () => {
   /* email cta */
   document.getElementById('emailCta').href = 'mailto:' + CONTACT_EMAIL;
 
-  /* contact form -> arma mensaje y abre WhatsApp */
+  /* =========================================================
+     🔒 SEGURIDAD Y VALIDACIÓN DEL FORMULARIO DE CONTACTO
+     - Bloquea números en campos de texto (nombre, asunto)
+     - Límites de longitud: 50 caracteres (nombre, asunto, email)
+       y 400 caracteres (mensaje)
+     - Sanitiza el contenido (elimina HTML/scripts) antes de usarlo
+     - Honeypot anti-bots + control de envíos repetidos
+     ========================================================= */
   const form = document.getElementById('contactForm');
   const status = document.getElementById('formStatus');
+  const btnSubmit = document.getElementById('btnSubmit');
+
+  const LIMITS = { nombre: 50, asunto: 50, email: 50, mensaje: 400 };
+  // Solo letras (con acentos/ñ), espacios, apóstrofes y guiones. Sin números ni símbolos.
+  const TEXT_ONLY_REGEX = /^[A-Za-zÁÉÍÓÚÑÜáéíóúñü\s'\-]*$/;
+  // Validación de formato de email razonablemente estricta.
+  const EMAIL_REGEX = /^[^\s@<>"]+@[^\s@<>"]+\.[A-Za-z]{2,}$/;
+  const HAS_DIGIT_REGEX = /\d/;
+
+  /* ---------------------------------------------------------
+     🚫 ANTI-SPAM: control de envíos repetidos
+     Persiste en localStorage (no se resetea al recargar la página).
+     - Espera mínima entre envíos: 20s
+     - Máximo 3 envíos cada 10 minutos
+     - Si se supera el máximo, bloqueo de 15 minutos
+     --------------------------------------------------------- */
+  const RATE_LIMIT = {
+    cooldownMs: 20 * 1000,
+    maxPerWindow: 3,
+    windowMs: 10 * 60 * 1000,
+    lockoutMs: 15 * 60 * 1000
+  };
+  const RATE_STORAGE_KEY = 'akpot_contact_submits';
+
+  function getSubmitHistory(){
+    try {
+      const raw = localStorage.getItem(RATE_STORAGE_KEY);
+      const list = raw ? JSON.parse(raw) : [];
+      return Array.isArray(list) ? list : [];
+    } catch(e){ return []; }
+  }
+  function saveSubmitHistory(history){
+    try { localStorage.setItem(RATE_STORAGE_KEY, JSON.stringify(history)); } catch(e){ /* localStorage no disponible: se ignora */ }
+  }
+  function formatWait(ms){
+    const totalSec = Math.ceil(ms / 1000);
+    if(totalSec < 60) return `${totalSec} segundo${totalSec === 1 ? '' : 's'}`;
+    const min = Math.ceil(totalSec / 60);
+    return `${min} minuto${min === 1 ? '' : 's'}`;
+  }
+  /** Devuelve {blocked, remainingMs} sin modificar el historial. */
+  function checkRateLimit(){
+    const now = Date.now();
+    const history = getSubmitHistory().filter(t => now - t < RATE_LIMIT.windowMs);
+    if(history.length >= RATE_LIMIT.maxPerWindow){
+      const lockoutEnd = history[0] + RATE_LIMIT.lockoutMs;
+      if(now < lockoutEnd){
+        return { blocked:true, remainingMs: lockoutEnd - now, reason:'lockout' };
+      }
+      return { blocked:false, history:[] }; // ventana vencida, se reinicia
+    }
+    if(history.length){
+      const last = history[history.length - 1];
+      if(now - last < RATE_LIMIT.cooldownMs){
+        return { blocked:true, remainingMs: RATE_LIMIT.cooldownMs - (now - last), reason:'cooldown' };
+      }
+    }
+    return { blocked:false, history };
+  }
+  /** Registra un envío exitoso en el historial. */
+  function registerSubmit(){
+    const now = Date.now();
+    const history = getSubmitHistory().filter(t => now - t < RATE_LIMIT.windowMs);
+    history.push(now);
+    saveSubmitHistory(history);
+  }
+  let countdownTimer = null;
+  /** Deshabilita el botón y muestra cuenta regresiva mientras dura el bloqueo. */
+  function startCooldownUI(remainingMs, reason){
+    clearInterval(countdownTimer);
+    btnSubmit.disabled = true;
+    const baseMsg = reason === 'lockout'
+      ? 'Demasiados envíos. Probá de nuevo en'
+      : 'Esperá un momento antes de reenviar:';
+    const tick = () => {
+      const left = Math.max(0, remainingMs);
+      status.textContent = `${baseMsg} ${formatWait(left)}.`;
+      status.className = 'form-status err';
+      if(left <= 0){
+        clearInterval(countdownTimer);
+        btnSubmit.disabled = false;
+        status.textContent = '';
+        status.className = 'form-status';
+      }
+      remainingMs -= 1000;
+    };
+    tick();
+    countdownTimer = setInterval(tick, 1000);
+  }
+  // Al cargar la página, si ya está en cooldown/lockout de una visita anterior, avisar.
+  (function checkOnLoad(){
+    const result = checkRateLimit();
+    if(result.blocked) startCooldownUI(result.remainingMs, result.reason);
+  })();
+
+  /** Elimina etiquetas HTML, scripts y caracteres de control para evitar inyecciones. */
+  function sanitize(value){
+    return String(value)
+      .replace(/<[^>]*>/g, '')            // quita etiquetas HTML/tags
+      .replace(/[\u0000-\u001F\u007F]/g, '') // quita caracteres de control
+      .trim();
+  }
+
+  /** Bloquea en tiempo real el ingreso de números en campos de solo texto. */
+  function blockDigitsWhileTyping(input){
+    input.addEventListener('input', () => {
+      if(HAS_DIGIT_REGEX.test(input.value)){
+        input.value = input.value.replace(/\d/g, '');
+      }
+    });
+    // Refuerzo: evita que se tipeen números incluso antes del evento input.
+    input.addEventListener('keypress', (e) => {
+      if(/\d/.test(e.key)) e.preventDefault();
+    });
+    input.addEventListener('paste', (e) => {
+      const pasted = (e.clipboardData || window.clipboardData).getData('text');
+      if(HAS_DIGIT_REGEX.test(pasted)){
+        e.preventDefault();
+        const cleaned = pasted.replace(/\d/g, '');
+        document.execCommand('insertText', false, cleaned);
+      }
+    });
+  }
+  blockDigitsWhileTyping(form.nombre);
+  blockDigitsWhileTyping(form.asunto);
+
+  /** Contador de caracteres en vivo para nombre, asunto y mensaje. */
+  function wireCounter(input, counterId, limit){
+    const counter = document.getElementById(counterId);
+    const update = () => {
+      const len = input.value.length;
+      counter.textContent = `${len}/${limit}`;
+      counter.parentElement.classList.toggle('is-limit', len >= limit);
+    };
+    input.addEventListener('input', update);
+    update();
+  }
+  wireCounter(form.nombre, 'countNombre', LIMITS.nombre);
+  wireCounter(form.asunto, 'countAsunto', LIMITS.asunto);
+  wireCounter(form.mensaje, 'countMensaje', LIMITS.mensaje);
+
+  function setFieldError(fieldId, errId, message){
+    const field = document.getElementById(fieldId);
+    const err = document.getElementById(errId);
+    if(message){
+      field.classList.add('field--error');
+      err.textContent = message;
+    } else {
+      field.classList.remove('field--error');
+      err.textContent = '';
+    }
+  }
+
+  function clearAllErrors(){
+    setFieldError('fieldNombre', 'errNombre', '');
+    setFieldError('fieldAsunto', 'errAsunto', '');
+    setFieldError('fieldEmail', 'errEmail', ''); // errEmail no existe visualmente, se ignora si falta
+    setFieldError('fieldMensaje', 'errMensaje', '');
+  }
+
+  let isSubmitting = false;
+
   form.addEventListener('submit', (e) => {
     e.preventDefault();
-    const nombre = form.nombre.value.trim();
-    const email = form.email.value.trim();
-    const asunto = form.asunto.value.trim();
-    const mensaje = form.mensaje.value.trim();
+    if(isSubmitting) return; // evita doble envío por clics repetidos
 
-    if(!nombre || !email || !asunto || !mensaje){
-      status.textContent = 'Completá todos los campos.';
+    // Anti-spam: si está en cooldown o lockout, no se procesa el envío.
+    const rate = checkRateLimit();
+    if(rate.blocked){
+      startCooldownUI(rate.remainingMs, rate.reason);
+      return;
+    }
+
+    clearAllErrors();
+
+    // Honeypot: si el campo trampa viene relleno, es un bot. Se corta silenciosamente.
+    const honeypot = document.getElementById('hpField');
+    if(honeypot && honeypot.value.trim() !== ''){
+      status.textContent = 'No pudimos procesar el envío.';
       status.className = 'form-status err';
       return;
     }
 
+    const nombre = sanitize(form.nombre.value);
+    const email = sanitize(form.email.value);
+    const asunto = sanitize(form.asunto.value);
+    const mensaje = sanitize(form.mensaje.value);
+
+    let hasError = false;
+
+    if(!nombre || nombre.length < 2){
+      setFieldError('fieldNombre', 'errNombre', 'Ingresá tu nombre y apellido.');
+      hasError = true;
+    } else if(nombre.length > LIMITS.nombre){
+      setFieldError('fieldNombre', 'errNombre', `Máximo ${LIMITS.nombre} caracteres.`);
+      hasError = true;
+    } else if(!TEXT_ONLY_REGEX.test(nombre)){
+      setFieldError('fieldNombre', 'errNombre', 'Solo se permiten letras, sin números.');
+      hasError = true;
+    }
+
+    if(!email){
+      status.textContent = 'Completá todos los campos.';
+      status.className = 'form-status err';
+      hasError = true;
+    } else if(email.length > LIMITS.email){
+      status.textContent = `El email no puede superar los ${LIMITS.email} caracteres.`;
+      status.className = 'form-status err';
+      hasError = true;
+    } else if(!EMAIL_REGEX.test(email)){
+      status.textContent = 'Ingresá un email válido.';
+      status.className = 'form-status err';
+      hasError = true;
+    }
+
+    if(!asunto || asunto.length < 2){
+      setFieldError('fieldAsunto', 'errAsunto', 'Ingresá un asunto.');
+      hasError = true;
+    } else if(asunto.length > LIMITS.asunto){
+      setFieldError('fieldAsunto', 'errAsunto', `Máximo ${LIMITS.asunto} caracteres.`);
+      hasError = true;
+    } else if(!TEXT_ONLY_REGEX.test(asunto)){
+      setFieldError('fieldAsunto', 'errAsunto', 'Solo se permiten letras, sin números.');
+      hasError = true;
+    }
+
+    if(!mensaje || mensaje.length < 5){
+      setFieldError('fieldMensaje', 'errMensaje', 'Escribí tu mensaje.');
+      hasError = true;
+    } else if(mensaje.length > LIMITS.mensaje){
+      setFieldError('fieldMensaje', 'errMensaje', `Máximo ${LIMITS.mensaje} caracteres.`);
+      hasError = true;
+    }
+
+    if(hasError){
+      if(status.textContent === ''){
+        status.textContent = 'Revisá los campos marcados en rojo.';
+        status.className = 'form-status err';
+      }
+      return;
+    }
+
+    // Registrar el envío para el control anti-spam y bloquear reenvíos inmediatos.
+    isSubmitting = true;
+    registerSubmit();
+
     const texto = `Hola AK-POT! Mi nombre es ${nombre} (${email}).\nAsunto: ${asunto}\n\n${mensaje}`;
     const url = `https://wa.me/${WHATSAPP_PHONE_NUMBER}?text=${encodeURIComponent(texto)}`;
-    window.open(url, '_blank');
+    window.open(url, '_blank', 'noopener,noreferrer');
 
-    status.textContent = '¡Listo! Te llevamos a WhatsApp para enviar tu mensaje.';
-    status.className = 'form-status ok';
     form.reset();
+    document.getElementById('countNombre').textContent = `0/${LIMITS.nombre}`;
+    document.getElementById('countAsunto').textContent = `0/${LIMITS.asunto}`;
+    document.getElementById('countMensaje').textContent = `0/${LIMITS.mensaje}`;
+
+    const postSend = checkRateLimit();
+    if(postSend.blocked){
+      // Ya alcanzó el máximo de envíos permitido: queda bloqueado con cuenta regresiva.
+      startCooldownUI(postSend.remainingMs, postSend.reason);
+    } else {
+      status.textContent = '¡Listo! Te llevamos a WhatsApp para enviar tu mensaje.';
+      status.className = 'form-status ok';
+      btnSubmit.disabled = true;
+      setTimeout(() => { btnSubmit.disabled = false; status.textContent=''; status.className='form-status'; }, RATE_LIMIT.cooldownMs);
+    }
+
+    isSubmitting = false;
   });
 });
 </script>
