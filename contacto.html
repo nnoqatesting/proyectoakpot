@@ -497,7 +497,7 @@
           <h3>Akpot Zona Norte</h3>
           <p>Consultá stock, precios y hacé tu pedido.</p>
         </div>
-        <a href="https://wa.me/5491135488807" target="_blank" rel="noopener" class="method-card__cta green">
+        <a href="https://wa.me/5491149756860" target="_blank" rel="noopener" class="method-card__cta green">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2z"/></svg>
           Abrir chat
         </a>
@@ -604,7 +604,7 @@
   </div>
 </footer>
 
-<a class="wa-fab-btn" href="https://wa.me/5491135488807" target="_blank" rel="noopener" aria-label="WhatsApp">
+<a class="wa-fab-btn" href="https://wa.me/5491149756860" target="_blank" rel="noopener" aria-label="WhatsApp">
   <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.79.47 3.47 1.29 4.93L2 22l5.31-1.39a9.9 9.9 0 004.73 1.2h.01c5.46 0 9.9-4.45 9.9-9.9C21.95 6.45 17.5 2 12.04 2zm0 18.09a8.2 8.2 0 01-4.18-1.15l-.3-.18-3.12.82.83-3.04-.2-.31a8.19 8.19 0 01-1.26-4.32c0-4.53 3.69-8.22 8.24-8.22 4.54 0 8.23 3.69 8.23 8.22 0 4.54-3.7 8.18-8.24 8.18zm4.52-6.16c-.25-.12-1.46-.72-1.68-.8-.23-.08-.4-.12-.56.13-.17.24-.64.8-.79.97-.14.16-.29.18-.54.06-.25-.12-1.04-.38-1.98-1.22-.73-.65-1.22-1.46-1.37-1.7-.14-.25-.02-.38.11-.5.11-.11.25-.29.37-.43.12-.15.16-.25.24-.42.08-.16.04-.3-.02-.43-.06-.12-.56-1.35-.77-1.85-.2-.48-.41-.42-.56-.43h-.48c-.16 0-.43.06-.66.31-.22.25-.86.85-.86 2.06 0 1.22.89 2.4 1.01 2.56.12.16 1.75 2.67 4.24 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.55.1.47-.07 1.46-.6 1.67-1.17.2-.58.2-1.08.14-1.18-.06-.1-.23-.16-.48-.28z"/></svg>
 </a>
 
@@ -613,7 +613,7 @@
    ⚙️ CONFIGURACIÓN — datos de contacto reales del negocio
    Reemplazá estos valores por los tuyos.
    ========================================================= */
-const WHATSAPP_PHONE_NUMBER = "5491135488807"; // número al que se enviará el formulario
+const WHATSAPP_PHONE_NUMBER = "5491149756860"; // número al que se enviará el formulario
 const CONTACT_EMAIL = "arribakpot@gmail.com"; // email real de contacto
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -796,11 +796,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const field = document.getElementById(fieldId);
     const err = document.getElementById(errId);
     if(message){
-      field.classList.add('field--error');
-      err.textContent = message;
+      if(field) field.classList.add('field--error');
+      if(err) err.textContent = message;
     } else {
-      field.classList.remove('field--error');
-      err.textContent = '';
+      if(field) field.classList.remove('field--error');
+      if(err) err.textContent = '';
     }
   }
 
